@@ -17,4 +17,11 @@ void loop() {
   float humidity = dht.readHumidity();
   int lightLevel = analogRead(LIGHT_PIN);
   int doorState = digitalRead(REED_PIN);
+
+  String payload = "{";
+  payload += "\"temperature\":" + String(temperature, 2) + ",";
+  payload += "\"humidity\":" + String(humidity, 2) + ",";
+  payload += "\"light\":" + String(lightLevel) + ",";
+  payload += "\"door_open\":" + String(doorState == HIGH ? "true" : "false");
+  payload += "}";
 }
