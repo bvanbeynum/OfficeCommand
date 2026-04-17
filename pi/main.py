@@ -136,3 +136,6 @@ while True:
         activeSerialConn = None
         time.sleep(5)
         continue
+        
+    # Prevent CPU spiking in edge cases where data streams too rapidly
+    time.sleep(0.1)
