@@ -5,126 +5,134 @@ import json
 import requests
 import time
 import serial
+import signal
 
 # ---------------------------------------------------------
 # Configuration Loading (Fail Fast)
 # ---------------------------------------------------------
-CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.js')
-if not os.path.exists(CONFIG_PATH):
-    sys.exit(f"ERROR: Config file not found at {CONFIG_PATH}")
+configPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.js')
+if not os.path.exists(configPath):
+    sys.exit(f"ERROR: Config file not found at {configPath}")
 
 try:
-    with open(CONFIG_PATH, 'r') as f:
-        CONFIG = json.load(f)
-    for key in ['api_url', 'serial_port', 'baud_rate']:
-        if key not in CONFIG:
-            sys.exit(f"ERROR: Missing required config key: {key}")
+    with open(configPath, 'r') as f:
+        configData = json.load(f)
+    for expectedKey in ['apiUrl', 'serialPort', 'baudRate']:
+        if expectedKey not in configData:
+            sys.exit(f"ERROR: Missing required config key: {expectedKey}")
 except Exception as e:
     sys.exit(f"ERROR: Config loading failed: {e}")
 
-API_URL = CONFIG['api_url']
-SERIAL_PORT = CONFIG['serial_port']
-BAUD_RATE = int(CONFIG['baud_rate'])
+apiUrl = configData['apiUrl']
+serialPort = configData['serialPort']
+baudRate = int(configData['baudRate'])
 
 # ---------------------------------------------------------
 # State Management & Remote Error Logging (Tasks 2.1 & 2.2)
 # ---------------------------------------------------------
-last_logged_error = None
+lastLoggedError = None
 
-def log_remote_error(error_details, source="ingestion_pi"):
-    global last_logged_error
+def logRemoteError(errorDetails, source="ingestion_pi"):
+    global lastLoggedError
     
     # Duplicate-error suppression logic
-    if error_details == last_logged_error:
+    if errorDetails == lastLoggedError:
         return
         
     try:
-        payload = {
+        payloadObj = {
             "source": source,
-            "message": str(error_details),
-            "details": str(error_details)
+            "message": str(errorDetails),
+            "details": str(errorDetails)
         }
         requests.post(
-            f"{API_URL}/api/errors", 
-            json=payload, 
+            f"{apiUrl}/api/errors", 
+            json=payloadObj, 
             timeout=5
         )
-        last_logged_error = error_details
+        lastLoggedError = errorDetails
     except Exception:
         # Ignore failures to send the error. Unmonitored device means no local logging.
         pass
 
 # Main business logic follows here...
-active_serial_conn = None
-last_sensor_post_time = 0
-last_heartbeat_time = 0
+activeSerialConn = None
+lastSensorPostTime = 0
+lastHeartbeatTime = 0
+
+def gracefulExit(signum, frame):
+    logRemoteError(f"Received signal {signum}, shutting down ingestion layer.")
+    if activeSerialConn:
+        activeSerialConn.close()
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, gracefulExit)
+signal.signal(signal.SIGTERM, gracefulExit)
 
 while True:
     try:
-        current_time = time.time()
+        currentTime = time.time()
         
         # Task 3.6: POST to /api/heartbeat every 60 seconds (non-blocking)
-        if (current_time - last_heartbeat_time) >= 60:
+        if (currentTime - lastHeartbeatTime) >= 60:
             try:
                 requests.post(
-                    f"{API_URL}/api/heartbeat", 
+                    f"{apiUrl}/api/heartbeat", 
                     timeout=5
                 )
-                last_heartbeat_time = current_time
+                lastHeartbeatTime = currentTime
             except Exception as e:
-                log_remote_error(f"Failed to post heartbeat: {e}")
+                logRemoteError(f"Failed to post heartbeat: {e}")
                 
         # Task 3.2: Attempt a robust serial connection
-        if active_serial_conn is None:
-            active_serial_conn = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=2)
+        if activeSerialConn is None:
+            activeSerialConn = serial.Serial(serialPort, baudRate, timeout=2)
             # Reset error logging state upon successful connection
-            last_logged_error = None
+            lastLoggedError = None
             
         # Task 3.3: Read newline-terminated strings
-        serial_line = active_serial_conn.readline()
-        if not serial_line:
+        serialLine = activeSerialConn.readline()
+        if not serialLine:
             # Timeout reached with no data
             continue
             
-        raw_string = serial_line.decode('utf-8').strip()
-        if not raw_string:
+        rawString = serialLine.decode('utf-8').strip()
+        if not rawString:
             continue
             
         # Task 3.4: Validate the serial string as JSON
         try:
-            sensor_data = json.loads(raw_string)
+            sensorData = json.loads(rawString)
         except json.JSONDecodeError as e:
-            log_remote_error(f"Invalid JSON from Arduino: {raw_string} - {e}")
+            logRemoteError(f"Invalid JSON from Arduino: {rawString} - {e}")
             continue
             
         # Task 3.5: POST valid JSON payloads to /api/sensors (10-second non-blocking interval)
-        current_time = time.time()
-        if (current_time - last_sensor_post_time) >= 10:
+        if (currentTime - lastSensorPostTime) >= 10:
             try:
                 requests.post(
-                    f"{API_URL}/api/sensors", 
-                    json=sensor_data, 
+                    f"{apiUrl}/api/sensors", 
+                    json=sensorData, 
                     timeout=5
                 )
-                last_sensor_post_time = current_time
+                lastSensorPostTime = currentTime
             except Exception as e:
-                log_remote_error(f"Failed to post sensor data: {e}")
+                logRemoteError(f"Failed to post sensor data: {e}")
                 
     except UnicodeDecodeError as e:
-        log_remote_error(f"Serial decode error: {e}")
+        logRemoteError(f"Serial decode error: {e}")
         continue
     except serial.SerialException as e:
-        log_remote_error(f"Serial connection/read failed: {e}")
-        if active_serial_conn:
-            active_serial_conn.close()
-        active_serial_conn = None
+        logRemoteError(f"Serial connection/read failed: {e}")
+        if activeSerialConn:
+            activeSerialConn.close()
+        activeSerialConn = None
         time.sleep(5)
         continue
     except Exception as e:
-        log_remote_error(f"Unexpected error in main loop: {e}")
-        if active_serial_conn:
-            active_serial_conn.close()
-        active_serial_conn = None
+        logRemoteError(f"Unexpected error in main loop: {e}")
+        if activeSerialConn:
+            activeSerialConn.close()
+        activeSerialConn = None
         time.sleep(5)
         continue
-
