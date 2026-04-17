@@ -5,10 +5,6 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
-
-# Ensure the script is executable
-RUN chmod +x main.py
-
+# Application code should be mounted to /usr/src/app at runtime
 # Run the ingestion layer
 CMD ["python", "-u", "./main.py"]
