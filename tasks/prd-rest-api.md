@@ -4,7 +4,7 @@
 This document covers the unified Data and Presentation Server. A single monolithic Node.js/Express instance (`server.js`) is identically responsible for ingesting data from the Raspberry Pi, saving to MongoDB, and natively serving the compiled React web dashboard alongside the API endpoints.
 
 **Development Environment:** 
-The application should be developed on the dev server in the `/home/bvanbeynum/dev/officecommand` directory. Git is already initialized here. Because the frontend and backend share the identical Node.js instance, avoid entirely detached codebases. The core server logic should reside in a primary `server.js` file at the root, maintaining unified control over both API routes and static frontend serving.
+The application is developed on the dev server in the `/home/bvanbeynum/dev/officecommand` directory. The frontend and backend share the same Node.js instance, and the core server logic resides in the `server.js` file at the root of the project.
 
 ## Goals
 *   Provide robust and fast API routes for both ingestion (POST) and querying (GET).

@@ -17,9 +17,9 @@
 ## Tasks
 
 - [ ] 1.0 Project Setup & Server Initialization
-  - [ ] 1.1 [RPI] Initialize the unified Node.js project (`npm init -y`) in the root directory via the Pi.
-  - [ ] 1.2 (No separate `backend` folder needed; core files stay at root).
-  - [ ] 1.3 [RPI] Install necessary minimum dependencies via the Pi (e.g., `express`, `mongoose`, `cors`). Keep packages minimal per security rules.
+  - [x] 1.1 [RPI] Initialize the unified Node.js project using Docker on the Pi: `docker run --rm -it -w /usr/src/web -v /home/bvanbeynum/dev/officecommand:/usr/src/web node:latest npm init -y`
+  - [x] 1.2 (No separate `backend` folder needed; core files stay at root).
+  - [x] 1.3 [RPI] Install minimum dependencies using Docker on the Pi: `docker run --rm -it -w /usr/src/web -v /home/bvanbeynum/dev/officecommand:/usr/src/web node:latest npm install express mongoose cors`. Keep packages minimal per security rules.
   - [ ] 1.4 [WIN] Create `config.js` using JSON format for environment variables (Port default to 9006, MongoDB URI). Update `.gitignore` to ignore this file.
   - [ ] 1.5 [WIN] Create `server.js` to initialize the Express app and start listening on the configured port.
   - [ ] 1.6 [WIN] Configure `express.static(...)` in `server.js` to serve a placeholder build directory for the frontend.
