@@ -14,8 +14,7 @@ app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 const mongoUri = `mongodb://${config.db.user}:${config.db.pass}@${config.db.host}:${config.db.port}/${config.db.name}?authSource=${config.db.authenticationSource}`;
 
 mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+// Options useNewUrlParser and useUnifiedTopology are no longer supported
 })
 .then(() => {
     console.log('MongoDB connected successfully');
