@@ -9,15 +9,18 @@ const sensorLogSchema = new mongoose.Schema({
 	},
 	temperature: {
 		type: Number,
-		required: true
+		required: true,
+		// Using Float (Number) as specified in PRD
 	},
 	humidity: {
 		type: Number,
-		required: true
+		required: true,
+		// Using Float (Number) as specified in PRD
 	},
 	light: {
 		type: Number,
-		required: true
+		required: true,
+		// Using Int (Number) as specified in PRD
 	},
 	doorOpen: { // Changed to camelCase for consistency with JavaScript conventions
 		type: Boolean,
@@ -25,7 +28,7 @@ const sensorLogSchema = new mongoose.Schema({
 	}
 });
 
-// Add a TTL index to prune documents older than 24 hours (24 * 60 * 60 seconds)
+// Add a TTL index to prune SensorLog documents older than 24 hours (24 * 60 * 60 seconds)
 sensorLogSchema.index({
 	timestamp: 1
 }, {
@@ -34,6 +37,18 @@ sensorLogSchema.index({
 
 const SensorLog = mongoose.model('SensorLog', sensorLogSchema);
 
+// ErrorLog Schema (Task 2.3)
+const errorLogSchema = new mongoose.Schema({
+	source: { type: String, required: true },
+	message: { type: String, required: true },
+	details: { type: String }, // Details can be optional
+	timestamp: { type: Date, default: Date.now, required: true }
+});
+
+const SensorLog = mongoose.model('SensorLog', sensorLogSchema);
+const ErrorLog = mongoose.model('ErrorLog', errorLogSchema);
+
 module.exports = {
-	SensorLog
+	SensorLog,
+	ErrorLog
 };
