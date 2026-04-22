@@ -16,7 +16,7 @@
 
 ## Tasks
 
-- [ ] 1.0 Project Setup & Server Initialization
+- [x] 1.0 Project Setup & Server Initialization
   - [x] 1.1 Initialize the unified Node.js project: `npm init -y`
   - [x] 1.2 (No separate `backend` folder needed; core files stay at root).
   - [x] 1.3 Install minimum dependencies: `npm install express mongoose cors`. Keep packages minimal per security rules.
@@ -26,7 +26,7 @@
   - [x] 1.7 Run the server and test that the Express app starts successfully on the target port.
 
 - [ ] 2.0 Database Connection & Schema Definition
-  - [ ] 2.1 Set up MongoDB connection in `server.js` strictly using `mongoose`. Construct the URI as: `mongodb://${config.db.user}:${config.db.pass}@$huntington.beynum.com:27017/beynum?authSource=beynum`.
+  - [x] 2.1 Set up MongoDB connection in `server.js` strictly using `mongoose`. Construct the URI as: `mongodb://${config.db.user}:${config.db.pass}@$huntington.beynum.com:27017/beynum?authSource=beynum`.
   - [ ] 2.2 Create `models.js` and define `SensorLog` schema with fields: `timestamp` (ISODate), `temperature` (Float), `humidity` (Float), `light` (Int), `door_open` (Boolean). Add a MongoDB TTL Index to automatic prune documents older than 24 hours.
   - [ ] 2.3 In `models.js`, define `ErrorLog` schema with fields: `source`, `message`, `details`, and `timestamp`. Do not prune error logs.
   - [ ] 2.4 In `models.js`, define `Settings` schema for configuration items (e.g., light threshold).
