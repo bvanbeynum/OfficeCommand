@@ -11,7 +11,7 @@ const port = config.port || 9006;
 app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
 // Database connection (Task 2.1)
-const mongoUri = `mongodb://${config.db.user}:${config.db.pass}@${config.mongoUri}`;
+const mongoUri = `mongodb://${config.db.user}:${config.db.pass}@${config.db.host}:${config.db.port}/${config.db.name}?authSource=${config.db.authenticationSource}`;
 
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,

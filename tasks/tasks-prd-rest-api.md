@@ -27,7 +27,7 @@
 
 - [ ] 2.0 Database Connection & Schema Definition
   - [x] 2.1 Set up MongoDB connection in `server.js` strictly using `mongoose`. Construct the URI as: `mongodb://${config.db.user}:${config.db.pass}@$huntington.beynum.com:27017/beynum?authSource=beynum`.
-  - [ ] 2.2 Create `models.js` and define `SensorLog` schema with fields: `timestamp` (ISODate), `temperature` (Float), `humidity` (Float), `light` (Int), `door_open` (Boolean). Add a MongoDB TTL Index to automatic prune documents older than 24 hours.
+  - [x] 2.2 Create `models.js` and define `SensorLog` schema with fields: `timestamp` (ISODate), `temperature` (Float), `humidity` (Float), `light` (Int), `door_open` (Boolean). Add a MongoDB TTL Index to automatic prune documents older than 24 hours.
   - [ ] 2.3 In `models.js`, define `ErrorLog` schema with fields: `source`, `message`, `details`, and `timestamp`. Do not prune error logs.
   - [ ] 2.4 In `models.js`, define `Settings` schema for configuration items (e.g., light threshold).
   - [ ] 2.5 In `models.js`, define `HeartbeatLog` schema to store a single ping document containing the status and last modified time.
