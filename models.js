@@ -45,10 +45,23 @@ const errorLogSchema = new mongoose.Schema({
 	timestamp: { type: Date, default: Date.now, required: true }
 });
 
-const SensorLog = mongoose.model('SensorLog', sensorLogSchema);
 const ErrorLog = mongoose.model('ErrorLog', errorLogSchema);
+
+// Settings Schema (Task 2.4)
+const settingsSchema = new mongoose.Schema({
+	// Example configuration item: light threshold
+	lightThreshold: {
+		type: Number,
+		default: 500, // Default value for light threshold
+		required: true
+	}
+	// Other settings can be added here as needed
+});
+
+const Settings = mongoose.model('Settings', settingsSchema);
 
 module.exports = {
 	SensorLog,
-	ErrorLog
+	ErrorLog,
+	Settings
 };
