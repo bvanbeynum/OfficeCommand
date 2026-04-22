@@ -23,7 +23,7 @@
   - [x] 1.4 Create config.js using JSON format for environment variables (Port default to 9006, MongoDB URI). Update .gitignore to ignore this file.
   - [x] 1.5 Create `server.js` to initialize the Express app and start listening on the configured port.
   - [x] 1.6 Configure `express.static(...)` in `server.js` to serve a placeholder build directory for the frontend.
-  - [ ] 1.7 Run the server and test that the Express app starts successfully on the target port.
+  - [x] 1.7 Run the server and test that the Express app starts successfully on the target port.
 
 - [ ] 2.0 Database Connection & Schema Definition
   - [ ] 2.1 Set up MongoDB connection in `server.js` strictly using `mongoose`. Construct the URI as: `mongodb://${config.db.user}:${config.db.pass}@$huntington.beynum.com:27017/beynum?authSource=beynum`.
