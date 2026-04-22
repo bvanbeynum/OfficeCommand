@@ -60,8 +60,17 @@ const settingsSchema = new mongoose.Schema({
 
 const Settings = mongoose.model('Settings', settingsSchema);
 
+// HeartbeatLog Schema (Task 2.5)
+const heartbeatLogSchema = new mongoose.Schema({
+	status: { type: Boolean, default: true, required: true }, // True for active, false for inactive
+	lastModifiedTime: { type: Date, default: Date.now, required: true }
+});
+
+const Settings = mongoose.model('Settings', settingsSchema);
+
 module.exports = {
 	SensorLog,
 	ErrorLog,
-	Settings
+	Settings,
+	HeartbeatLog
 };

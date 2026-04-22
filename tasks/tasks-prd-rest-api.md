@@ -30,7 +30,7 @@
   - [x] 2.2 Create `models.js` and define `SensorLog` schema with fields: `timestamp` (ISODate), `temperature` (Float), `humidity` (Float), `light` (Int), `door_open` (Boolean). Add a MongoDB TTL Index to automatic prune documents older than 24 hours.
   - [x] 2.3 In `models.js`, define `ErrorLog` schema with fields: `source`, `message`, `details`, and `timestamp`. Do not prune error logs.
   - [x] 2.4 In `models.js`, define `Settings` schema for configuration items (e.g., light threshold).
-  - [ ] 2.5 In `models.js`, define `HeartbeatLog` schema to store a single ping document containing the status and last modified time.
+  - [x] 2.5 In `models.js`, define `HeartbeatLog` schema to store a single ping document containing the status and last modified time.
   - [ ] 2.6 Run server and verify MongoDB connects successfully without crashing.
 
 - [ ] 3.0 Ingestion API Endpoints (POST routes)
