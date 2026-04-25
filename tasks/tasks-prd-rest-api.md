@@ -39,14 +39,14 @@
   - [x] 3.3 In `routes.js`, implement `POST /api/heartbeat`. Overwrite the single existing document in `HeartbeatLog` without creating a history.
   - [x] 3.4 Test (e.g., cURL/Node scripts) against the backend to verify `/api/sensors`, `/api/errors`, and `/api/heartbeat` ingest correctly.
 
-- [ ] 4.0 Web Dashboard API Endpoints (GET & POST routes)
+- [x] 4.0 Web Dashboard API Endpoints (GET & POST routes)
   - [x] 4.1 In `routes.js`, implement `GET /api/sensors/current`. Fetch and return the single most recent document in `SensorLog`.
-  - [ ] 4.2 In `routes.js`, implement `GET /api/sensors/history?timeframe=X`. Process `timeframe` query and return the relevant aggregated array for charting.
-  - [ ] 4.3 In `routes.js`, implement `POST /api/settings` to save/update user preferences.
-  - [ ] 4.4 In `routes.js`, implement `GET /api/settings` to fetch settings so they can be displayed on the frontend.
-  - [ ] 4.5 In `routes.js`, implement `GET /api/errors` to return a list of recent error logs to the dashboard.
-  - [ ] 4.6 Ensure all successful responses are wrapped in `{ "success": true, "data": data, "error": null }`.
-  - [ ] 4.7 Test querying endpoints, validating correct output constraints natively.
+  - [x] 4.2 In `routes.js`, implement `GET /api/sensors/history?timeframe=X`. Process `timeframe` query and return the relevant aggregated array for charting.
+  - [x] 4.3 In `routes.js`, implement `POST /api/settings` to save/update user preferences.
+  - [x] 4.4 In `routes.js`, implement `GET /api/settings` to fetch settings so they can be displayed on the frontend.
+  - [x] 4.5 In `routes.js`, implement `GET /api/errors` to return a list of recent error logs to the dashboard.
+  - [x] 4.6 Ensure all successful responses are wrapped in `{ "success": true, "data": data, "error": null }`.
+  - [x] 4.7 Test querying endpoints, validating correct output constraints natively.
 
 - [ ] 5.0 Error Handling, Middleware & Graceful Shutdown
   - [ ] 5.1 In `server.js`, implement a centralized error handling middleware that captures any request/route errors.
