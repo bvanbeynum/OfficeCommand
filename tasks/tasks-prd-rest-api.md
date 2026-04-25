@@ -31,7 +31,7 @@
   - [x] 2.3 In `models.js`, define `ErrorLog` schema with fields: `source`, `message`, `details`, and `timestamp`. Do not prune error logs.
   - [x] 2.4 In `models.js`, define `Settings` schema for configuration items (e.g., light threshold).
   - [x] 2.5 In `models.js`, define `HeartbeatLog` schema to store a single ping document containing the status and last modified time.
-  - [ ] 2.6 Run server and verify MongoDB connects successfully without crashing.
+  - [x] 2.6 Run server and verify MongoDB connects successfully without crashing.
 
 - [ ] 3.0 Ingestion API Endpoints (POST routes)
   - [ ] 3.1 Create `routes.js` and implement `POST /api/sensors`. Validate payload variables, inject server timestamp, and save to `SensorLog`.
