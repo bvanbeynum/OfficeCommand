@@ -100,4 +100,23 @@ router.post('/heartbeat', async (req, res) => {
 		res.status(500).json({ success: false, data: null, error: error.message || 'Internal server error' });
 	}
 });
+
+// Task 4.1: GET /api/sensors/current - Fetch and return the single most recent document in SensorLog
+router.get('/sensors/current', async (req, res) => {
+	try {
+		const latestSensorLog = await SensorLog.findOne().sort({
+			timestamp: -1
+		});
+
+		if (!latestSensorLog) {
+			return res.status(404).json({ success: false, data: null, error: 'No sensor data found.' });
+		}
+
+		res.status(200).json({ success: true, data: latestSensorLog, error: null });
+	} catch (error) {
+		console.error('Error fetching current sensor data:', error);
+		res.status(500).json({ success: false, data: null, error: error.message || 'Internal server error' });
+	}
+});
+
 module.exports = router;

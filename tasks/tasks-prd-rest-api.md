@@ -33,14 +33,14 @@
   - [x] 2.5 In `models.js`, define `HeartbeatLog` schema to store a single ping document containing the status and last modified time.
   - [x] 2.6 Run server and verify MongoDB connects successfully without crashing.
 
-- [ ] 3.0 Ingestion API Endpoints (POST routes)
+- [x] 3.0 Ingestion API Endpoints (POST routes)
   - [x] 3.1 Create `routes.js` and implement `POST /api/sensors`. Validate payload variables, inject server timestamp, and save to `SensorLog`.
   - [x] 3.2 In `routes.js`, implement `POST /api/errors`. Process input, attach timestamp, and save to `ErrorLog`.
   - [x] 3.3 In `routes.js`, implement `POST /api/heartbeat`. Overwrite the single existing document in `HeartbeatLog` without creating a history.
   - [x] 3.4 Test (e.g., cURL/Node scripts) against the backend to verify `/api/sensors`, `/api/errors`, and `/api/heartbeat` ingest correctly.
 
 - [ ] 4.0 Web Dashboard API Endpoints (GET & POST routes)
-  - [ ] 4.1 In `routes.js`, implement `GET /api/sensors/current`. Fetch and return the single most recent document in `SensorLog`.
+  - [x] 4.1 In `routes.js`, implement `GET /api/sensors/current`. Fetch and return the single most recent document in `SensorLog`.
   - [ ] 4.2 In `routes.js`, implement `GET /api/sensors/history?timeframe=X`. Process `timeframe` query and return the relevant aggregated array for charting.
   - [ ] 4.3 In `routes.js`, implement `POST /api/settings` to save/update user preferences.
   - [ ] 4.4 In `routes.js`, implement `GET /api/settings` to fetch settings so they can be displayed on the frontend.
