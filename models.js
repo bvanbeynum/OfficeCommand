@@ -66,7 +66,7 @@ const heartbeatLogSchema = new mongoose.Schema({
 	lastModifiedTime: { type: Date, default: Date.now, required: true }
 });
 
-const Settings = mongoose.model('Settings', settingsSchema);
+const HeartbeatLog = mongoose.model('HeartbeatLog', heartbeatLogSchema);
 
 module.exports = {
 	SensorLog,
