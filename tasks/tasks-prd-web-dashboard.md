@@ -40,11 +40,11 @@
 	- [x] 3.3 Create a `SensorContext.js` provider mapping `useState` variables for telemetry, settings, and historical arrays.
 	- [x] 3.4 Implement a `useEffect` polling mechanism inside context to call `fetchCurrentSensors()` every 10 seconds (only if authenticated).
 	- [x] 3.5 Verify with Browser Subagent, and check into git.
-- [ ] 4.0 Authentication Barrier Implementation
+- [x] 4.0 Authentication Barrier Implementation
 	- [x] 4.1 Build an `AuthModal.js` component with a simple password input and submit handler.
 	- [x] 4.2 Update `App.js` to conditionally render `AuthModal` if access is false.
 	- [x] 4.3 Ensure the `SensorContext` polling interval only activates upon successful password matching.
-	- [ ] 4.4 Verify with Browser Subagent, and check into git.
+	- [x] 4.4 Verify with Browser Subagent, and check into git.
 - [ ] 5.0 Dashboard Layout & Real-Time Metric Cards
 	- [ ] 5.1 Implement a grid-based `Dashboard.js` component as the application core.
 	- [ ] 5.2 Build a highly visual `MetricCard.js` component utilizing gradients and animations.
