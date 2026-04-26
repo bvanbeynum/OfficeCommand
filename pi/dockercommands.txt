@@ -1,8 +1,1 @@
-docker run -d \
-  --name officecommand-pi \
-  --network host \
-  -e TZ="America/New_York" \
-  --device=/dev/ttyUSB0:/dev/ttyUSB0 \
-  -v /home/bvanbeynum/officecommand/pi:/usr/src/app \
-  --restart unless-stopped \
-  officecommand-pi-image:latest
+docker run -d --name officecommand-pi --network host -e TZ="America/New_York" --device=/dev/ttyUSB0:/dev/ttyUSB0 -v /home/bvanbeynum/OfficeCommand/pi:/usr/src/app --restart unless-stopped officecommand-pi-image:latest
