@@ -1,14 +1,16 @@
 // /home/bvanbeynum/dev/officecommand/frontend/components/Dashboard.js
 
-import React from 'react';
+import React, { useState } from 'react';
 import TemperatureChart from './TemperatureChart';
 import MetricCard from './MetricCard';
 import SettingsPanel from './SettingsPanel';
 import AcControlPanel from './AcControlPanel';
+import ErrorLogModal from './ErrorLogModal';
 import { useSensor } from '../context/SensorContext';
 
 const Dashboard = () => {
 	const { currentTelemetry, historicalData } = useSensor();
+	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
 	const mockLogs = [
 		{ timestamp: '2023-08-25 16:30', temp: '73°F', hum: '51', light: 'OFF', door: true },
@@ -24,7 +26,7 @@ const Dashboard = () => {
 					<span className="header-subtitle">TEGAS CAY, SC</span>
 				</div>
 				<div className="header-actions">
-					<span className="header-icon">🔔</span>
+					<span className="header-icon" onClick={() => setIsErrorModalOpen(true)} style={{ cursor: 'pointer' }}>🔔</span>
 					<span className="header-icon">🚪</span>
 				</div>
 			</header>
@@ -89,8 +91,14 @@ const Dashboard = () => {
 					</div>
 
 					<div className="card table-card">
-						<div className="table-header">
+						<div className="table-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 							<h4 className="table-title">Recent Logs (MongoDB)</h4>
+							<button 
+								onClick={() => setIsErrorModalOpen(true)}
+								style={{ background: 'transparent', border: 'none', color: 'var(--color-accent-blue)', fontSize: '0.7rem', cursor: 'pointer', fontWeight: '600' }}
+							>
+								VIEW ERRORS
+							</button>
 						</div>
 						<table className="log-table">
 							<thead>
@@ -119,6 +127,8 @@ const Dashboard = () => {
 					<SettingsPanel />
 				</div>
 			</main>
+
+			{isErrorModalOpen && <ErrorLogModal onClose={() => setIsErrorModalOpen(false)} />}
 		</div>
 	);
 };

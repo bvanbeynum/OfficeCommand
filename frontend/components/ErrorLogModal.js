@@ -23,19 +23,19 @@ const ErrorLogModal = ({ onClose }) => {
 	}, []);
 
 	return (
-		<div className="auth-modal-overlay" onClick={onClose}>
-			<div className="auth-modal-content error-modal-content" onClick={(event) => event.stopPropagation()}>
+		<div className="modal-overlay" onClick={onClose}>
+			<div className="modal-content" onClick={(event) => event.stopPropagation()}>
 				<div className="modal-header">
 					<h2>System Error Logs</h2>
-					<button onClick={onClose} className="modal-close-button">&times;</button>
+					<button onClick={onClose} className="modal-close-btn">&times;</button>
 				</div>
 				
-				{isLoading ? (
-					<p className="empty-state-message">Loading error history...</p>
-				) : errorLogs.length === 0 ? (
-					<p className="empty-state-message">No errors logged recently. System is healthy.</p>
-				) : (
-					<div className="error-table-container">
+				<div className="modal-body">
+					{isLoading ? (
+						<div className="empty-state">Loading error history...</div>
+					) : errorLogs.length === 0 ? (
+						<div className="empty-state">No errors logged recently. System is healthy.</div>
+					) : (
 						<table className="error-table">
 							<thead>
 								<tr>
@@ -46,21 +46,23 @@ const ErrorLogModal = ({ onClose }) => {
 							</thead>
 							<tbody>
 								{errorLogs.map((logItem) => (
-									<tr key={logItem._id} className="error-table-row">
-										<td className="error-timestamp">{new Date(logItem.timestamp).toLocaleString()}</td>
-										<td>{logItem.source}</td>
-										<td className="error-message-cell">
-											<span className="error-message-text">{logItem.message}</span>
+									<tr key={logItem._id}>
+										<td style={{ color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
+											{new Date(logItem.timestamp).toLocaleString()}
+										</td>
+										<td className="error-source">{logItem.source}</td>
+										<td>
+											<div className="error-msg">{logItem.message}</div>
 											{logItem.details && (
-												<pre className="error-details-pre">{logItem.details}</pre>
+												<div className="error-details">{logItem.details}</div>
 											)}
 										</td>
 									</tr>
 								))}
 							</tbody>
 						</table>
-					</div>
-				)}
+					)}
+				</div>
 			</div>
 		</div>
 	);

@@ -2,15 +2,13 @@
 
 import React, { useState } from 'react';
 
-// This component will be responsible for prompting the user for a password
-// and handling the submission.
 const AuthModal = ({ onAuthenticate }) => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		setError(''); // Clear previous errors
+		setError('');
 		
 		try {
 			const response = await fetch('/api/authenticate', {
@@ -32,17 +30,24 @@ const AuthModal = ({ onAuthenticate }) => {
 			setError('Network error during authentication.');
 			onAuthenticate(false);
 		} finally {
-			setPassword(''); // Clear password field after attempt
+			setPassword('');
 		}
 	};
 
 	return (
 		<div className="auth-modal-overlay">
 			<div className="auth-modal-content">
-				<h2>Enter Password</h2>
+				<h2 style={{ marginBottom: '24px' }}>Office Command</h2>
 				<form onSubmit={handleSubmit}>
-					<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Password" required />
-					<button type="submit">Unlock Dashboard</button>
+					<input 
+						className="auth-input"
+						type="password" 
+						value={password} 
+						onChange={(event) => setPassword(event.target.value)} 
+						placeholder="Password" 
+						required 
+					/>
+					<button className="auth-btn" type="submit">Unlock Dashboard</button>
 					{error && <p className="error-message">{error}</p>}
 				</form>
 			</div>
