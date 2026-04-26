@@ -1,6 +1,6 @@
 // /home/bvanbeynum/dev/officecommand/frontend/components/Dashboard.js
 
-import React from 'react';
+import React from 'react'; // Removed classNames import
 import TemperatureChart from './TemperatureChart'; // Import TemperatureChart
 import MetricCard from './MetricCard'; // Import the MetricCard component
 import { useSensor } from '../context/SensorContext';
@@ -8,7 +8,7 @@ import { useSensor } from '../context/SensorContext';
 // This component serves as the core layout for the dashboard, using a grid system.
 const Dashboard = () => {
 	// Consume context data for current telemetry
-	const { currentTelemetry, settings } = useSensor();
+	const { currentTelemetry, settings, historicalData, selectedTimeframe, setSelectedTimeframe } = useSensor();
 
 	// Helper function to render a metric card or a loading state
 	const renderMetricCard = (title, value, unit, icon, status) => {
@@ -30,6 +30,20 @@ const Dashboard = () => {
 		<main className="dashboard-grid">
 			{currentTelemetry && settings ? ( // Ensure both currentTelemetry and settings are available
 				<>
+					<div className="timeframe-toggle-control chart-card"> {/* This card contains the chart and its controls */}
+						<div className="timeframe-buttons">
+							<button onClick={() => setSelectedTimeframe('1h')} // Use direct conditional class assignment
+								className={`timeframe-button ${selectedTimeframe === '1h' ? 'active' : ''}`}>1h</button>
+							<button onClick={() => setSelectedTimeframe('5h')} // Use direct conditional class assignment
+								className={`timeframe-button ${selectedTimeframe === '5h' ? 'active' : ''}`}>5h</button>
+							<button onClick={() => setSelectedTimeframe('24h')} // Use direct conditional class assignment
+								className={`timeframe-button ${selectedTimeframe === '24h' ? 'active' : ''}`}>24h</button>
+						</div>
+						{/* Pass the historical temperature data from context */}
+						<TemperatureChart historicalTemperatures={historicalData.temperature} />
+					</div>
+
+					{/* Other Metric Cards */}
 					{renderMetricCard("Temperature", currentTelemetry.temperature?.toFixed(1), "°F", "🌡️")}
 					{renderMetricCard("Humidity", currentTelemetry.humidity?.toFixed(1), "%", "💧")}
 					{renderMetricCard("Light", currentTelemetry.light, "lux", "💡", isLightAlert ? 'light-alert' : 'normal')}
@@ -39,8 +53,7 @@ const Dashboard = () => {
 						null,
 						currentTelemetry.doorOpen ? '🚪' : '🔒',
 						currentTelemetry.doorOpen ? 'alert' : 'normal' // Placeholder for future alert styling
-					)}
-					<TemperatureChart /> {/* Include the TemperatureChart component */}
+					)} {/* Removed the duplicate TemperatureChart here */}
 				</>
 			) : ( // Show loading message if either currentTelemetry or settings are null
 				<p>Loading sensor data and settings...</p>

@@ -213,6 +213,50 @@ body {
     100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
 }
 
+/* New wrapper for the chart itself within the chart-card */
+.chart-inner-wrapper {
+    flex-grow: 1; /* Allow it to take up available space within its flex parent (.chart-card) */
+}
+
+/* Segmented Toggle Control for Charts */
+.timeframe-toggle-control {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	padding-bottom: 0; /* Adjust padding as chart content is inside */
+}
+
+.timeframe-buttons {
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end; /* Align buttons to the right */
+	margin-bottom: 15px;
+}
+
+.timeframe-button {
+	background-color: var(--color-background-tertiary);
+	color: var(--color-text-secondary);
+	border: 1px solid var(--color-border);
+	padding: 8px 15px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+	font-weight: 500;
+}
+
+/* Active button style */
+.timeframe-button.active {
+	background-color: var(--color-accent-blue);
+	color: white;
+	border-color: var(--color-accent-blue);
+}
+
+/* Hover effect for buttons */
+.timeframe-button:not(.active):hover {
+	background-color: var(--color-background-primary);
+	color: var(--color-text-primary);
+}
+
 
 /* Micro-animation utility classes */
 /* This class provides a smooth transition effect for properties like transform, box-shadow, color, background-color */

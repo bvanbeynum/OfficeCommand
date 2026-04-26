@@ -54,8 +54,8 @@
  - [x] 6.0 Historical Trend Visualization (Line Charts)
 	- [x] 6.1 Build `TemperatureChart.js` directly drawing a dynamic SVG line chart to map the historical data array, avoiding any third-party charting libraries.
 	- [x] 6.2 Style the SVG paths (stroke, fill) to match the dark-mode aesthetic (e.g., distinct scalable lines).
-	- [ ] 6.3 Implement a segmented toggle control (1h, 5h, 24h) that triggers `fetchHistory()` and forces the SVG chart to re-render.
-	- [ ] 6.4 Verify with Browser Subagent, and check into git.
+	- [x] 6.3 Implement a segmented toggle control (1h, 5h, 24h) that triggers `fetchHistory()` and forces the SVG chart to re-render.
+	- [x] 6.4 Verify with Browser Subagent, and check into git.
 - [ ] 7.0 Settings Panel & Global Error Handling UI
 	- [ ] 7.1 Implement `SettingsPanel.js` containing an interactive slider for the light threshold; POST changes to backend on adjustment.
 	- [ ] 7.2 Create an `ErrorBoundary.js` component wrapping the tree. On `componentDidCatch`, POST the error stack trace to the API.
