@@ -43,7 +43,7 @@
 - [ ] 4.0 Authentication Barrier Implementation
 	- [x] 4.1 Build an `AuthModal.js` component with a simple password input and submit handler.
 	- [x] 4.2 Update `App.js` to conditionally render `AuthModal` if access is false.
-	- [ ] 4.3 Ensure the `SensorContext` polling interval only activates upon successful password matching.
+	- [x] 4.3 Ensure the `SensorContext` polling interval only activates upon successful password matching.
 	- [ ] 4.4 Verify with Browser Subagent, and check into git.
 - [ ] 5.0 Dashboard Layout & Real-Time Metric Cards
 	- [ ] 5.1 Implement a grid-based `Dashboard.js` component as the application core.
