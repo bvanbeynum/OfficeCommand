@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useLayoutEffect } from 'react';
 
-const TemperatureChart = ({ historicalTemperatures }) => {
+const TemperatureChart = ({ data }) => {
     const [chartWidth, setChartWidth] = useState(0);
     const [chartHeight, setChartHeight] = useState(0);
     const containerRef = useRef(null);
@@ -19,47 +19,68 @@ const TemperatureChart = ({ historicalTemperatures }) => {
         return () => window.removeEventListener('resize', updateDimensions);
     }, []);
 
-    const validTemperatures = historicalTemperatures
-        .filter(d => d && typeof d.temperature === 'number' && !isNaN(d.temperature) && d.timestamp)
+    const validData = (data || [])
+        .filter(d => d && typeof d.temperature === 'number' && typeof d.humidity === 'number' && d.timestamp)
         .map(d => ({
             temperature: d.temperature,
+            humidity: d.humidity,
             timestamp: new Date(d.timestamp).getTime()
         }));
 
-    if (validTemperatures.length < 2 || chartWidth === 0 || chartHeight === 0) {
-        return <div ref={containerRef} style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>No historical data</div>;
+    if (validData.length < 2 || chartWidth === 0 || chartHeight === 0) {
+        return <div ref={containerRef} style={{ height: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>No historical data</div>;
     }
 
-    const minTemp = Math.min(...validTemperatures.map(d => d.temperature));
-    const maxTemp = Math.max(...validTemperatures.map(d => d.temperature));
+    // Temperature scaling
+    const temps = validData.map(d => d.temperature);
+    const minTemp = Math.min(...temps);
+    const maxTemp = Math.max(...temps);
     const tempPadding = (maxTemp - minTemp) * 0.2 || 2;
     const displayMinTemp = minTemp - tempPadding;
     const displayMaxTemp = maxTemp + tempPadding;
     const tempRange = displayMaxTemp - displayMinTemp;
 
-    const minTimestamp = Math.min(...validTemperatures.map(d => d.timestamp));
-    const maxTimestamp = Math.max(...validTemperatures.map(d => d.timestamp));
+    // Humidity scaling (fixed 0-100% or dynamic)
+    const hums = validData.map(d => d.humidity);
+    const displayMinHum = 0;
+    const displayMaxHum = 100;
+    const humRange = 100;
+
+    const minTimestamp = Math.min(...validData.map(d => d.timestamp));
+    const maxTimestamp = Math.max(...validData.map(d => d.timestamp));
     const timeRange = maxTimestamp - minTimestamp;
 
-    const margin = { top: 10, right: 10, bottom: 20, left: 35 };
+    const margin = { top: 10, right: 35, bottom: 20, left: 35 };
     const innerWidth = chartWidth - margin.left - margin.right;
     const innerHeight = chartHeight - margin.top - margin.bottom;
 
-    const points = validTemperatures.map(d => {
+    const tempPoints = validData.map(d => {
         const x = margin.left + ((d.timestamp - minTimestamp) / timeRange) * innerWidth;
         const y = margin.top + innerHeight - ((d.temperature - displayMinTemp) / tempRange) * innerHeight;
         return { x, y };
     });
 
-    const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
-    const areaPath = `${linePath} L ${points[points.length-1].x} ${margin.top + innerHeight} L ${points[0].x} ${margin.top + innerHeight} Z`;
+    const humPoints = validData.map(d => {
+        const x = margin.left + ((d.timestamp - minTimestamp) / timeRange) * innerWidth;
+        const y = margin.top + innerHeight - ((d.humidity - displayMinHum) / humRange) * innerHeight;
+        return { x, y };
+    });
+
+    const tempLinePath = tempPoints.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+    const tempAreaPath = `${tempLinePath} L ${tempPoints[tempPoints.length-1].x} ${margin.top + innerHeight} L ${tempPoints[0].x} ${margin.top + innerHeight} Z`;
+
+    const humLinePath = humPoints.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
 
     return (
-        <div ref={containerRef} style={{ height: '120px', width: '100%', position: 'relative' }}>
+        <div ref={containerRef} style={{ height: '140px', width: '100%', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: -20, right: 0, display: 'flex', gap: '12px', fontSize: '10px', fontWeight: '600' }}>
+                <span style={{ color: 'var(--color-accent-blue)' }}>● TEMP</span>
+                <span style={{ color: 'var(--color-accent-green)' }}>● HUMIDITY</span>
+            </div>
             <svg width="100%" height="100%" viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
                 <defs>
-                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="var(--color-accent-blue)" stopOpacity="0.4" />
+                    <linearGradient id="tempGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="var(--color-accent-blue)" stopOpacity="0.3" />
                         <stop offset="100%" stopColor="var(--color-accent-blue)" stopOpacity="0" />
                     </linearGradient>
                 </defs>
@@ -78,16 +99,21 @@ const TemperatureChart = ({ historicalTemperatures }) => {
                     />
                 ))}
 
-                <path d={areaPath} fill="url(#chartGradient)" />
-                <path d={linePath} fill="none" stroke="var(--color-accent-blue)" strokeWidth="2" />
+                <path d={tempAreaPath} fill="url(#tempGradient)" />
+                <path d={tempLinePath} fill="none" stroke="var(--color-accent-blue)" strokeWidth="2" />
+                <path d={humLinePath} fill="none" stroke="var(--color-accent-green)" strokeWidth="1.5" strokeDasharray="3,2" />
 
-                <text x={margin.left - 8} y={margin.top} textAnchor="end" dominantBaseline="middle" fill="var(--color-text-muted)" fontSize="10">{displayMaxTemp.toFixed(0)}°F</text>
-                <text x={margin.left - 8} y={margin.top + innerHeight} textAnchor="end" dominantBaseline="middle" fill="var(--color-text-muted)" fontSize="10">{displayMinTemp.toFixed(0)}°F</text>
+                {/* Left Axis - Temperature */}
+                <text x={margin.left - 8} y={margin.top} textAnchor="end" dominantBaseline="middle" fill="var(--color-accent-blue)" fontSize="10">{displayMaxTemp.toFixed(0)}°</text>
+                <text x={margin.left - 8} y={margin.top + innerHeight} textAnchor="end" dominantBaseline="middle" fill="var(--color-accent-blue)" fontSize="10">{displayMinTemp.toFixed(0)}°</text>
 
+                {/* Right Axis - Humidity */}
+                <text x={chartWidth - margin.right + 8} y={margin.top} textAnchor="start" dominantBaseline="middle" fill="var(--color-accent-green)" fontSize="10">100%</text>
+                <text x={chartWidth - margin.right + 8} y={margin.top + innerHeight} textAnchor="start" dominantBaseline="middle" fill="var(--color-accent-green)" fontSize="10">0%</text>
+
+                {/* Bottom Axis - Time */}
                 <text x={margin.left} y={chartHeight - 4} textAnchor="start" fill="var(--color-text-muted)" fontSize="10">06hr</text>
-                <text x={margin.left + innerWidth * 0.25} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">08hr</text>
-                <text x={margin.left + innerWidth * 0.5} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">10hr</text>
-                <text x={margin.left + innerWidth * 0.75} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">16hr</text>
+                <text x={margin.left + innerWidth * 0.5} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">12hr</text>
                 <text x={margin.left + innerWidth} y={chartHeight - 4} textAnchor="end" fill="var(--color-text-muted)" fontSize="10">24hr</text>
             </svg>
         </div>

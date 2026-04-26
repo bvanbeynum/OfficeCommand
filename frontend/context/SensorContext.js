@@ -58,12 +58,12 @@ export const SensorProvider = ({ children, isAuthenticated }) => {
                 
                 // Live-update the chart by appending the new data point to historical data
                 setHistoricalData(previousData => {
-                    const tempHistory = previousData.temperature || [];
-                    const lastDataPoint = tempHistory[tempHistory.length - 1];
+                    const logsHistory = previousData.logs || [];
+                    const lastDataPoint = logsHistory[logsHistory.length - 1];
                     
                     // Only append if the timestamp is genuinely new to avoid duplicates
                     if (!lastDataPoint || new Date(lastDataPoint.timestamp).getTime() !== new Date(result.data.timestamp).getTime()) {
-                        return { ...previousData, temperature: [...tempHistory, result.data] };
+                        return { ...previousData, logs: [...logsHistory, result.data] };
                     }
                     return previousData;
                 });
@@ -95,7 +95,7 @@ export const SensorProvider = ({ children, isAuthenticated }) => {
             if (isAuthenticated && selectedTimeframe) {
                 const result = await fetchHistory(selectedTimeframe);
                 if (result.success) {
-                    setHistoricalData(previousData => ({ ...previousData, temperature: result.data })); // Update only temperature history for now
+                    setHistoricalData(previousData => ({ ...previousData, logs: result.data })); // Update full logs history
                 } else {
                     console.error("Failed to fetch historical data:", result.error);
                 }

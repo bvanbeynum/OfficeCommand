@@ -13,8 +13,8 @@ const Dashboard = () => {
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
 	const mockLogs = [
-		{ timestamp: '2023-08-25 16:30', temp: '73°F', hum: '51', light: 'OFF', door: true },
-		{ timestamp: '2023-08-25 15:30', temp: '73°F', hum: '48', light: 'OFF', door: true },
+		{ timestamp: '2023-08-25 16:30', temp: '73°F', hum: '51%', light: 'OFF', door: true },
+		{ timestamp: '2023-08-25 15:30', temp: '73°F', hum: '48%', light: 'OFF', door: true },
 	];
 
 	return (
@@ -83,10 +83,10 @@ const Dashboard = () => {
 					
 					<div className="card table-card">
 						<div className="table-header">
-							<h4 className="table-title">Temperature History - 24hr</h4>
+							<h4 className="table-title">Environment History - 24hr</h4>
 						</div>
-						<div style={{ padding: '20px' }}>
-							<TemperatureChart historicalTemperatures={historicalData.temperature} />
+						<div style={{ padding: '30px 20px 20px 20px' }}>
+							<TemperatureChart data={historicalData.logs} />
 						</div>
 					</div>
 
