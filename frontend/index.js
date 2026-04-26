@@ -1,7 +1,9 @@
+// /home/bvanbeynum/dev/officecommand/frontend/index.js
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css'; // Will be created in the next step for global styles
+import './index.css'; // Global CSS
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(<React.StrictMode><App /></React.StrictMode>);
