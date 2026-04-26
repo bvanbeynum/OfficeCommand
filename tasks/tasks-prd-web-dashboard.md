@@ -41,7 +41,7 @@
 	- [x] 3.4 Implement a `useEffect` polling mechanism inside context to call `fetchCurrentSensors()` every 10 seconds (only if authenticated).
 	- [x] 3.5 Verify with Browser Subagent, and check into git.
 - [ ] 4.0 Authentication Barrier Implementation
-	- [ ] 4.1 Build an `AuthModal.js` component with a simple password input and submit handler.
+	- [x] 4.1 Build an `AuthModal.js` component with a simple password input and submit handler.
 	- [ ] 4.2 Update `App.js` to conditionally render `AuthModal` if access is false.
 	- [ ] 4.3 Ensure the `SensorContext` polling interval only activates upon successful password matching.
 	- [ ] 4.4 Verify with Browser Subagent, and check into git.
