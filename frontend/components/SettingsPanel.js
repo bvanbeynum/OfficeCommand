@@ -41,7 +41,7 @@ const SettingsPanel = () => {
                 <div style={{ width: '120px' }}>
                     <input 
                         type="range" 
-                        min="0" max="1023" 
+                        min="0" max="255" 
                         value={localThreshold} 
                         onChange={handleSliderChange} 
                         onMouseUp={handleSave} 

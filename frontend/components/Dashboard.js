@@ -9,8 +9,10 @@ import ErrorLogModal from './ErrorLogModal';
 import { useSensor } from '../context/SensorContext';
 
 const Dashboard = () => {
-	const { currentTelemetry, historicalData } = useSensor();
+	const { currentTelemetry, historicalData, settings } = useSensor();
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+
+    const lightThreshold = settings?.lightThreshold || 150;
 
 	// Get the last 5 logs from historical data and sort them descending by timestamp
 	const recentLogs = [...(historicalData.logs || [])]
@@ -58,8 +60,8 @@ const Dashboard = () => {
 
 					<MetricCard 
 						title="Light Level" 
-						value={currentTelemetry?.light < 150 ? 'Lights OFF' : 'Lights ON'} 
-						subtitle={`Raw value: ${currentTelemetry?.light || 0} / Threshold: 150`}
+						value={currentTelemetry?.light < lightThreshold ? 'Lights OFF' : 'Lights ON'} 
+						subtitle={`Raw value: ${currentTelemetry?.light || 0} / Threshold: ${lightThreshold}`}
 						icon="💡"
 					/>
 
@@ -117,7 +119,7 @@ const Dashboard = () => {
 											<td>{new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
 											<td>{log.temperature?.toFixed(0)}°F</td>
 											<td>{log.humidity?.toFixed(0)}%</td>
-											<td>{log.light < 150 ? 'OFF' : 'ON'}</td>
+											<td>{log.light < lightThreshold ? 'OFF' : 'ON'}</td>
 											<td>{log.doorOpen ? '✅' : '🔒'}</td>
 										</tr>
 									))
