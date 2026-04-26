@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/sensors', async (req, res) => {
 	try {
-		const { temperature, humidity, light, door_open } = req.body;
+		const { temperature, humidity, light, door_open } = req.body || {};
 
 		// Basic payload validation
 		if (
@@ -42,7 +42,7 @@ router.post('/sensors', async (req, res) => {
 
 router.post('/errors', async (req, res) => {
 	try {
-		const { source, message, details } = req.body;
+		const { source, message, details } = req.body || {};
 
 		// Basic payload validation for error fields
 		if (typeof source !== 'string' || typeof message !== 'string' || typeof details !== 'string') {
@@ -70,7 +70,7 @@ router.post('/errors', async (req, res) => {
 
 router.post('/heartbeat', async (req, res) => {
 	try {
-		const { status } = req.body;
+		const { status } = req.body || {};
 
 		let heartbeatStatus = true; // Default to active (true) as per PRD's intention
 
@@ -166,7 +166,7 @@ router.get('/sensors/history', async (req, res) => {
 // Task 4.3: POST /api/settings - Save/update user preferences.
 router.post('/settings', async (req, res) => {
 	try {
-		const { lightThreshold } = req.body;
+		const { lightThreshold } = req.body || {};
 
 		// Basic validation for lightThreshold (assuming it's the primary setting for now)
 		if (typeof lightThreshold !== 'number' || lightThreshold < 0) {
@@ -244,7 +244,7 @@ router.get('/errors', async (req, res) => {
 // POST /api/authenticate - Verify dashboard password
 router.post('/authenticate', async (req, res) => {
 	try {
-		const { password } = req.body;
+		const { password } = req.body || {};
 		
 		if (password === config.dashboardPassword) {
 			res.status(200).json({ success: true, data: true, error: null });

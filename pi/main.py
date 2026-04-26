@@ -78,6 +78,7 @@ while True:
             try:
                 requests.post(
                     f"{apiUrl}/api/heartbeat", 
+                    json={},
                     timeout=5
                 )
                 lastHeartbeatTime = currentTime
