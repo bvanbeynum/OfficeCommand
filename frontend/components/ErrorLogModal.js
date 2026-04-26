@@ -39,22 +39,23 @@ const ErrorLogModal = ({ onClose }) => {
 						<table className="error-table">
 							<thead>
 								<tr>
-									<th>Timestamp</th>
-									<th>Source</th>
-									<th>Message</th>
+									<th style={{ width: '180px' }}>Timestamp</th>
+									<th style={{ width: '150px' }}>Source</th>
+									<th>Details</th>
 								</tr>
 							</thead>
 							<tbody>
 								{errorLogs.map((logItem) => (
 									<tr key={logItem._id}>
-										<td style={{ color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
+										<td style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>
 											{new Date(logItem.timestamp).toLocaleString()}
 										</td>
-										<td className="error-source">{logItem.source}</td>
+										<td className="error-source" style={{ fontSize: '0.75rem' }}>{logItem.source}</td>
 										<td>
-											<div className="error-msg">{logItem.message}</div>
-											{logItem.details && (
-												<div className="error-details">{logItem.details}</div>
+											{logItem.details ? (
+												<div className="error-details" style={{ marginTop: 0 }}>{logItem.details}</div>
+											) : (
+												<div className="error-msg" style={{ color: 'var(--color-text-primary)' }}>{logItem.message}</div>
 											)}
 										</td>
 									</tr>
