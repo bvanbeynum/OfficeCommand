@@ -1,19 +1,19 @@
 ## Relevant Files
 
-- `frontend/package.json` - Dependencies and build scripts for the React application.
-- `frontend/webpack.dev.js` & `frontend/webpack.prod.js` - Distinct build configurations for development and production.
-- `frontend/src/index.js` - React DOM entry point.
-- `frontend/src/index.css` - Global Vanilla CSS, layout variables, typography, and micro-animation classes.
-- `frontend/src/App.js` - Main application wrapper, setting up context and ErrorBoundary.
-- `frontend/src/context/SensorContext.js` - Global state provider handling API interactions, data storage, and the 10-second polling interval.
-- `frontend/src/utils/api.js` - Centralized HTTP fetch handlers to interact with the Node.js API.
-- `frontend/src/components/AuthModal.js` - Security barrier component prompting for password on initial load.
-- `frontend/src/components/Dashboard.js` - The main container assembling all widgets in a single-page layout.
-- `frontend/src/components/MetricCard.js` - Reusable UI widget for distinct sensor readouts (Temp, Humidity, etc.).
-- `frontend/src/components/TemperatureChart.js` - Dynamic chart visualization component rendering historical arrays.
-- `frontend/src/components/SettingsPanel.js` - Component containing the light threshold slider.
-- `frontend/src/components/ErrorLogModal.js` - Dedicated UI to view fetched database error historical logs.
-- `frontend/src/components/ErrorBoundary.js` - Global error catcher to trap frontend UI crashes and POST them.
+- `package.json` - Dependencies and build scripts for the React application.
+- `webpack.dev.js` & `webpack.prod.js` - Distinct build configurations for development and production.
+- `frontend/index.js` - React DOM entry point.
+- `frontend/index.css` - Global Vanilla CSS, layout variables, typography, and micro-animation classes.
+- `frontend/App.js` - Main application wrapper, setting up context and ErrorBoundary.
+- `frontend/context/SensorContext.js` - Global state provider handling API interactions, data storage, and the 10-second polling interval.
+- `frontend/utils/api.js` - Centralized HTTP fetch handlers to interact with the Node.js API.
+- `frontend/components/AuthModal.js` - Security barrier component prompting for password on initial load.
+- `frontend/components/Dashboard.js` - The main container assembling all widgets in a single-page layout.
+- `frontend/components/MetricCard.js` - Reusable UI widget for distinct sensor readouts (Temp, Humidity, etc.).
+- `frontend/components/TemperatureChart.js` - Dynamic chart visualization component rendering historical arrays.
+- `frontend/components/SettingsPanel.js` - Component containing the light threshold slider.
+- `frontend/components/ErrorLogModal.js` - Dedicated UI to view fetched database error historical logs.
+- `frontend/components/ErrorBoundary.js` - Global error catcher to trap frontend UI crashes and POST them.
 
 ### Notes
 
@@ -25,7 +25,7 @@
 ## Tasks
 
 - [ ] 1.0 React Tooling Setup (in `/frontend` sub-folder)
-	- [ ] 1.1 Create the `frontend` directory on the Raspberry Pi for React source code. Configure build tools (Webpack) to compile static assets directly to a designated root serving folder (e.g., `../public` or `../dist`) so the root `server.js` can serve them natively. Run all Node.js/NPM commands using the `node:latest` Docker image.
+	- [ ] 1.1 Create the `frontend` directory on the Raspberry Pi for React source code. Configure build tools (Webpack) to compile static assets directly to a designated root serving folder `./build` so the root `server.js` can serve them natively. Run all Node.js/NPM commands using the `node:latest` Docker image.
 	- [ ] 1.2 Create distinct Webpack configurations (`webpack.dev.js`, `webpack.prod.js`) and Babel setup per global rules.
 	- [ ] 1.3 Scaffold `index.html`, `index.js`, and `App.js`.
 	- [ ] 1.4 Verify with Browser Subagent, and check into git.
@@ -33,7 +33,7 @@
 	- [ ] 2.1 Establish a dark-mode CSS variables palette in `index.css` (deep backgrounds, sleek harmonious accent colors).
 	- [ ] 2.2 Import and apply a modern web font (e.g., Inter, Roboto).
 	- [ ] 2.3 Define reusable micro-animation utility classes (e.g., subtle drop-shadow expansions, hover scaling).
-	- [ ] 2.4 Verify with Browser Subagent, and check into git.
+	- [ ] 2.4 Create docker image, verify with user, and check into git.
 - [ ] 3.0 API Services & Global State Management (Context)
 	- [ ] 3.1 Create `api.js` to standardize HTTP GET/POST calls dealing with `{ "success", "data", "error" }` payloads.
 	- [ ] 3.2 Build functions for `fetchCurrentSensors()`, `fetchHistory(timeframe)`, `postSettings(data)`, and `postError(err)`.
