@@ -35,9 +35,9 @@
 	- [x] 2.3 Define reusable micro-animation utility classes (e.g., subtle drop-shadow expansions, hover scaling).
 	- [x] 2.4 Create docker image, verify with user, and check into git.
 - [ ] 3.0 API Services & Global State Management (Context)
-	- [ ] 3.1 Create `api.js` to standardize HTTP GET/POST calls dealing with `{ "success", "data", "error" }` payloads.
-	- [ ] 3.2 Build functions for `fetchCurrentSensors()`, `fetchHistory(timeframe)`, `postSettings(data)`, and `postError(err)`.
-	- [ ] 3.3 Create a `SensorContext.js` provider mapping `useState` variables for telemetry, settings, and historical arrays.
+	- [x] 3.1 Create `api.js` to standardize HTTP GET/POST calls dealing with `{ "success", "data", "error" }` payloads.
+	- [x] 3.2 Build functions for `fetchCurrentSensors()`, `fetchHistory(timeframe)`, `postSettings(data)`, and `postError(err)`.
+	- [x] 3.3 Create a `SensorContext.js` provider mapping `useState` variables for telemetry, settings, and historical arrays.
 	- [ ] 3.4 Implement a `useEffect` polling mechanism inside context to call `fetchCurrentSensors()` every 10 seconds (only if authenticated).
 	- [ ] 3.5 Verify with Browser Subagent, and check into git.
 - [ ] 4.0 Authentication Barrier Implementation
