@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true })); // For parsing application/x-ww
 
 // Declare serverInstance variable in a scope accessible by gracefulShutdown
 let serverInstance;
+let webpackDevMiddlewareInstance; // New variable to hold the webpack-dev-middleware instance
 
 // Database connection (Task 2.1)
 const mongoUri = `mongodb://${config.db.user}:${config.db.pass}@${config.db.host}:${config.db.port}/${config.db.name}?authSource=${config.db.authenticationSource}`;
@@ -41,13 +42,13 @@ if (isDevelopmentMode) {
 		import("webpack"),
 		import("webpack-dev-middleware"),
 		import("./frontend/webpack.dev.js")
-	])
-	.then(([webpack, webpackDevMiddleware, webpackConfig]) => {
+	]).then(([webpack, webpackDevMiddlewareModule, webpackConfig]) => {
 		const webpackLoader = webpack.default;
-		const middleware = webpackDevMiddleware.default;
+		const middlewareCreator = webpackDevMiddlewareModule.default;
 
-		const compilier = webpackLoader(webpackConfig.default);
-		app.use(middleware(compilier, { publicPath: "/" }));
+		const compiler = webpackLoader(webpackConfig.default);
+		webpackDevMiddlewareInstance = middlewareCreator(compiler, { publicPath: "/" });
+		app.use(webpackDevMiddlewareInstance);
 	});
 }
 else {
@@ -106,28 +107,55 @@ app.use((error, req, res, next) => {
 });
 
 // Task 5.4: Implement Graceful Shutdown
+// Declare a flag to prevent multiple shutdown attempts
+let isShuttingDown = false;
+
 const gracefulShutdown = (signal) => {
+	if (isShuttingDown) {
+		console.log(`Already shutting down. Ignoring signal: ${signal}`);
+		return;
+	}
+	isShuttingDown = true;
 	console.log(`\n${signal} received. Initiating graceful shutdown...`);
 
-	// Close HTTP server to stop accepting new requests
-	if (serverInstance) {
-		serverInstance.close(() => {
-			console.log('HTTP server closed.');
-			// Once HTTP server is closed, close DB connection
-			closeDbAndExit();
-		});
-	} else {
-		// If server wasn't even started, just close DB
-		closeDbAndExit();
-	}
+	// Set a timeout to force exit if graceful shutdown takes too long
+	const shutdownTimeout = setTimeout(() => {
+		console.error('Forcing shutdown due to timeout!');
+		process.exit(1);
+	}, 10000); // 10 seconds timeout
+
+    // Close HTTP server to stop accepting new requests
+    if (serverInstance) {
+		// Explicitly close webpack-dev-middleware first if in development mode
+		if (isDevelopmentMode && webpackDevMiddlewareInstance && typeof webpackDevMiddlewareInstance.close === 'function') {
+			console.log('Closing webpack-dev-middleware...');
+			webpackDevMiddlewareInstance.close(() => {
+				console.log('webpack-dev-middleware closed.');
+				serverInstance.close(() => {
+					console.log('HTTP server closed.');
+					closeDbAndExit(shutdownTimeout);
+				});
+			});
+		} else {
+			serverInstance.close(() => {
+				console.log('HTTP server closed.');
+				closeDbAndExit(shutdownTimeout);
+			});
+        };
+    } 
+	else {
+        // If server wasn't even started, just close DB
+        closeDbAndExit(shutdownTimeout);
+    }
 };
 
 // Helper function to close DB and exit
-const closeDbAndExit = async () => {
+const closeDbAndExit = async (timeoutId) => {
 	try {
 		console.log('Closing MongoDB connection...');
 		await mongoose.disconnect();
 		console.log('MongoDB disconnected.');
+		clearTimeout(timeoutId); // Clear the timeout if shutdown completes gracefully
 	} catch (err) {
 		console.error('Error during MongoDB disconnection:', err);
 	} finally {
