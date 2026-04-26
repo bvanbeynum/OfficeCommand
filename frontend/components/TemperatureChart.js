@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useLayoutEffect } from 'react';
 
-const TemperatureChart = ({ data }) => {
+const TemperatureChart = ({ data, timeframe }) => {
     const [chartWidth, setChartWidth] = useState(0);
     const [chartHeight, setChartHeight] = useState(0);
     const containerRef = useRef(null);
@@ -111,10 +111,14 @@ const TemperatureChart = ({ data }) => {
                 <text x={chartWidth - margin.right + 8} y={margin.top} textAnchor="start" dominantBaseline="middle" fill="var(--color-accent-green)" fontSize="10">100%</text>
                 <text x={chartWidth - margin.right + 8} y={margin.top + innerHeight} textAnchor="start" dominantBaseline="middle" fill="var(--color-accent-green)" fontSize="10">0%</text>
 
-                {/* Bottom Axis - Time */}
-                <text x={margin.left} y={chartHeight - 4} textAnchor="start" fill="var(--color-text-muted)" fontSize="10">06hr</text>
-                <text x={margin.left + innerWidth * 0.5} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">12hr</text>
-                <text x={margin.left + innerWidth} y={chartHeight - 4} textAnchor="end" fill="var(--color-text-muted)" fontSize="10">24hr</text>
+                {/* Bottom Axis - Time (Dynamic based on timeframe) */}
+                <text x={margin.left} y={chartHeight - 4} textAnchor="start" fill="var(--color-text-muted)" fontSize="10">
+                    {timeframe === '1h' ? '60m ago' : timeframe === '5h' ? '5h ago' : '24h ago'}
+                </text>
+                <text x={margin.left + innerWidth * 0.5} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">
+                    {timeframe === '1h' ? '30m ago' : timeframe === '5h' ? '2.5h ago' : '12h ago'}
+                </text>
+                <text x={margin.left + innerWidth} y={chartHeight - 4} textAnchor="end" fill="var(--color-text-muted)" fontSize="10">Now</text>
             </svg>
         </div>
     );

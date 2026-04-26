@@ -9,10 +9,17 @@ import ErrorLogModal from './ErrorLogModal';
 import { useSensor } from '../context/SensorContext';
 
 const Dashboard = () => {
-	const { currentTelemetry, historicalData, settings } = useSensor();
+	const { currentTelemetry, historicalData, settings, selectedTimeframe, setSelectedTimeframe } = useSensor();
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
     const lightThreshold = settings?.lightThreshold || 150;
+
+	// Timeframe labels for the UI
+	const timeframeLabels = {
+		'1h': 'Last 1 Hour',
+		'5h': 'Last 5 Hours',
+		'24h': 'Last 24 Hours'
+	};
 
 	// Get the last 5 logs from historical data and sort them descending by timestamp
 	const recentLogs = [...(historicalData.logs || [])]
@@ -84,11 +91,23 @@ const Dashboard = () => {
 					<span className="column-title">System Data & Logs</span>
 					
 					<div className="card table-card">
-						<div className="table-header">
-							<h4 className="table-title">Environment History - 24hr</h4>
+						<div className="table-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+							<h4 className="table-title">Environment History - {selectedTimeframe}</h4>
+							<div className="btn-group" style={{ margin: 0 }}>
+								{Object.keys(timeframeLabels).map(tf => (
+									<button 
+										key={tf}
+										className={`group-btn ${selectedTimeframe === tf ? 'active' : ''}`}
+										onClick={() => setSelectedTimeframe(tf)}
+										style={{ padding: '4px 8px', fontSize: '0.65rem' }}
+									>
+										{tf.toUpperCase()}
+									</button>
+								))}
+							</div>
 						</div>
 						<div style={{ padding: '30px 20px 20px 20px' }}>
-							<TemperatureChart data={historicalData.logs} />
+							<TemperatureChart data={historicalData.logs} timeframe={selectedTimeframe} />
 						</div>
 					</div>
 
