@@ -48,9 +48,9 @@
   - [x] 4.6 Ensure all successful responses are wrapped in `{ "success": true, "data": data, "error": null }`.
   - [x] 4.7 Test querying endpoints, validating correct output constraints natively.
 
-- [ ] 5.0 Error Handling, Middleware & Graceful Shutdown
-  - [ ] 5.1 In `server.js`, implement a centralized error handling middleware that captures any request/route errors.
-  - [ ] 5.2 Ensure identical JSON responses for errors: `{ "success": false, "data": null, "error": "error message" }`.
-  - [ ] 5.3 Catch all unhandled promise rejections system-wide and map them to the unified logger instead of a silent failure.
-  - [ ] 5.4 Implement Graceful Shutdown in `server.js`: listen for `SIGINT` and `SIGTERM`, stop accepting new HTTP connections, and cleanly close the MongoDB connection before exiting.
-  - [ ] 5.5 Execute negative tests (induce an error and observe middleware correctly catching it and gracefully shutting down on SIGINT).
+- [x] 5.0 Error Handling, Middleware & Graceful Shutdown
+  - [x] 5.1 In `server.js`, implement a centralized error handling middleware that captures any request/route errors.
+  - [x] 5.2 Ensure identical JSON responses for errors: `{ "success": false, "data": null, "error": "error message" }`.
+  - [x] 5.3 Catch all unhandled promise rejections system-wide and map them to the unified logger instead of a silent failure.
+  - [x] 5.4 Implement Graceful Shutdown in `server.js`: listen for `SIGINT` and `SIGTERM`, stop accepting new HTTP connections, and cleanly close the MongoDB connection before exiting.
+  - [x] 5.5 Execute negative tests (induce an error and observe middleware correctly catching it and gracefully shutting down on SIGINT).
