@@ -41,10 +41,11 @@ body {
 
 .dashboard-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid columns */
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Increased min-width to force collapse earlier */
 	gap: 20px;
 	padding: 20px;
 	min-height: 100vh;
+	align-content: start; /* Prevents rows from stretching to fill the full viewport height */
 }
 
 /* MetricCard styles */
@@ -134,20 +135,6 @@ body {
     margin-top: 0;
     color: var(--color-text-primary);
     margin-bottom: 15px;
-}
-
-/* Chart Specific Styles */
-.chart-card {
-    background: var(--color-background-secondary);
-    border-radius: 12px;
-    padding: 20px;
-    color: var(--color-text-primary);
-    box-shadow: 0 4px 8px var(--color-shadow);
-    border: 1px solid var(--color-border);
-    grid-column: span 2; /* Make chart span two columns in the grid */
-    min-height: 300px;
-    display: flex; /* Use flexbox to manage internal layout */
-    flex-direction: column; /* Stack title and chart vertically */
 }
 
 .chart-container {
@@ -452,4 +439,42 @@ body {
 	color: var(--color-text-secondary);
 	white-space: pre-wrap; /* Forces the stack trace to wrap instead of scrolling horizontally */
 	word-wrap: break-word;
+}
+
+/* System Health Button */
+.system-health-container {
+	grid-column: 1 / -1;
+	text-align: center;
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
+.system-health-button {
+	background-color: var(--color-background-tertiary);
+	border: 1px solid var(--color-border);
+	color: var(--color-text-secondary);
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.9rem;
+	transition: all 0.2s ease-in-out;
+}
+
+.system-health-button:hover {
+	background-color: var(--color-background-secondary);
+	color: var(--color-text-primary);
+	border-color: var(--color-text-secondary);
+	transform: scale(1.02);
+}
+
+/* Mobile Responsive Media Queries */
+@media (max-width: 850px) {
+	.dashboard-grid {
+		grid-template-columns: 1fr !important;
+		padding: 10px;
+	}
+	
+	.chart-card {
+		grid-column: 1 / -1 !important; /* Prevent the chart from forcing a 2-column width on mobile */
+	}
 }

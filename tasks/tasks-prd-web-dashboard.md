@@ -62,9 +62,9 @@
 	- [x] 7.3 Build an `ErrorLogModal.js` capable of fetching `/api/errors` and presenting a historical table of exceptions.
 	- [x] 7.4 Verify with Browser Subagent, and check into git.
 - [ ] 8.0 Responsive Refinement & Final Testing
-	- [ ] 8.1 Write media queries in `index.css` to collapse the Dashboard grid into a single column for mobile viewports.
-	- [ ] 8.2 Perform manual validation: verify password block, test polling without page refreshes, and evaluate visual alert changes dynamically.
-	- [ ] 8.3 Verify with Browser Subagent, and check into git.
+	- [x] 8.1 Write media queries in `index.css` to collapse the Dashboard grid into a single column for mobile viewports.
+	- [x] 8.2 Perform manual validation: verify password block, test polling without page refreshes, and evaluate visual alert changes dynamically.
+	- [x] 8.3 Verify with Browser Subagent, and check into git.
 - [ ] 9.0 Deployment Configuration & Handoff
 	- [ ] 9.1 Provide clear documentation/terminal output reminding the user what the configured authentication password is.
 	- [ ] 9.2 Remind the user of any remaining environment values, database URI changes, or API endpoint configurations needed for the production build.

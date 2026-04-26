@@ -55,6 +55,18 @@ export const SensorProvider = ({ children, isAuthenticated }) => {
 
             if (result.success) {
                 setCurrentTelemetry(result.data);
+                
+                // Live-update the chart by appending the new data point to historical data
+                setHistoricalData(previousData => {
+                    const tempHistory = previousData.temperature || [];
+                    const lastDataPoint = tempHistory[tempHistory.length - 1];
+                    
+                    // Only append if the timestamp is genuinely new to avoid duplicates
+                    if (!lastDataPoint || new Date(lastDataPoint.timestamp).getTime() !== new Date(result.data.timestamp).getTime()) {
+                        return { ...previousData, temperature: [...tempHistory, result.data] };
+                    }
+                    return previousData;
+                });
             } else {
                 console.error("Failed to fetch current sensors:", result.error);
                 // Optionally, handle error state or retry logic
