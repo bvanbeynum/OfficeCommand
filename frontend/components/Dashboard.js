@@ -1,79 +1,125 @@
 // /home/bvanbeynum/dev/officecommand/frontend/components/Dashboard.js
 
-import React, { useState } from 'react'; // Removed classNames import
-import TemperatureChart from './TemperatureChart'; // Import TemperatureChart
-import MetricCard from './MetricCard'; // Import the MetricCard component
-import SettingsPanel from './SettingsPanel'; // Import SettingsPanel
-import ErrorLogModal from './ErrorLogModal'; // Import ErrorLogModal
+import React from 'react';
+import TemperatureChart from './TemperatureChart';
+import MetricCard from './MetricCard';
+import SettingsPanel from './SettingsPanel';
+import AcControlPanel from './AcControlPanel';
 import { useSensor } from '../context/SensorContext';
 
-// This component serves as the core layout for the dashboard, using a grid system.
 const Dashboard = () => {
-	// Consume context data for current telemetry
-	const { currentTelemetry, settings, historicalData, selectedTimeframe, setSelectedTimeframe } = useSensor();
-	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+	const { currentTelemetry, historicalData } = useSensor();
 
-	// Helper function to render a metric card or a loading state
-	const renderMetricCard = (title, value, unit, icon, status) => {
-		return (
-			<MetricCard
-				title={title}
-				value={value}
-				unit={unit}
-				icon={icon}
-				status={status}
-			/>
-		);
-	};
-
-	// Determine light status based on threshold from settings
-	const isLightAlert = currentTelemetry && settings && currentTelemetry.light > settings.lightThreshold;
+	const mockLogs = [
+		{ timestamp: '2023-08-25 16:30', temp: '73°F', hum: '51', light: 'OFF', door: true },
+		{ timestamp: '2023-08-25 15:30', temp: '73°F', hum: '48', light: 'OFF', door: true },
+	];
 
 	return (
-		<main className="dashboard-grid">
-			{currentTelemetry && settings ? ( // Ensure both currentTelemetry and settings are available
-				<>
-					<div className="timeframe-toggle-control chart-card"> {/* This card contains the chart and its controls */}
-						<div className="timeframe-buttons">
-							<button onClick={() => setSelectedTimeframe('1h')} // Use direct conditional class assignment
-								className={`timeframe-button ${selectedTimeframe === '1h' ? 'active' : ''}`}>1h</button>
-							<button onClick={() => setSelectedTimeframe('5h')} // Use direct conditional class assignment
-								className={`timeframe-button ${selectedTimeframe === '5h' ? 'active' : ''}`}>5h</button>
-							<button onClick={() => setSelectedTimeframe('24h')} // Use direct conditional class assignment
-								className={`timeframe-button ${selectedTimeframe === '24h' ? 'active' : ''}`}>24h</button>
+		<div className="app-container">
+			<header className="dashboard-header">
+				<div className="header-title-container">
+					<span className="header-title">Office Climate Control</span>
+					<span className="header-title-divider">|</span>
+					<span className="header-subtitle">TEGAS CAY, SC</span>
+				</div>
+				<div className="header-actions">
+					<span className="header-icon">🔔</span>
+					<span className="header-icon">🚪</span>
+				</div>
+			</header>
+
+			<main className="dashboard-grid">
+				{/* Column 1: Live Monitoring */}
+				<div className="dashboard-column">
+					<span className="column-title">Live Monitoring</span>
+					<MetricCard 
+						title="Current Temperature" 
+						value={currentTelemetry?.temperature?.toFixed(0)} 
+						unit="°F" 
+						subtitle="Updated 30s ago"
+						isLarge={true}
+					>
+						<div className="ideal-indicator">
+							<span className="ideal-icon">🌡️</span>
+							<span className="ideal-text">Ideal</span>
 						</div>
-						{/* Pass the historical temperature data from context */}
-						<TemperatureChart historicalTemperatures={historicalData.temperature} />
+					</MetricCard>
+					
+					<MetricCard 
+						title="Humidity" 
+						value={currentTelemetry?.humidity?.toFixed(0)} 
+						unit="%" 
+						subtitle="Comfortable"
+						icon="💧"
+					/>
+
+					<MetricCard 
+						title="Light Level" 
+						value={currentTelemetry?.light < 150 ? 'Lights OFF' : 'Lights ON'} 
+						subtitle={`Raw value: ${currentTelemetry?.light || 0} / Threshold: 150`}
+						icon="💡"
+					/>
+
+					<MetricCard 
+						title="Door Status" 
+						value={currentTelemetry?.doorOpen ? 'Main Door: OPEN' : 'Main Door: CLOSED'} 
+						subtitle="Last action: 10:15 AM"
+						icon="🚪"
+					/>
+				</div>
+
+				{/* Column 2: AC Unit Control */}
+				<div className="dashboard-column">
+					<span className="column-title">AC Unit Control (MrCool DIY)</span>
+					<AcControlPanel />
+				</div>
+
+				{/* Column 3: System Data & Logs */}
+				<div className="dashboard-column">
+					<span className="column-title">System Data & Logs</span>
+					
+					<div className="card table-card">
+						<div className="table-header">
+							<h4 className="table-title">Temperature History - 24hr</h4>
+						</div>
+						<div style={{ padding: '20px' }}>
+							<TemperatureChart historicalTemperatures={historicalData.temperature} />
+						</div>
 					</div>
 
-					{/* Other Metric Cards */}
-					{renderMetricCard("Temperature", currentTelemetry.temperature?.toFixed(1), "°F", "🌡️")}
-					{renderMetricCard("Humidity", currentTelemetry.humidity?.toFixed(1), "%", "💧")}
-					{renderMetricCard("Light", currentTelemetry.light, "lux", "💡", isLightAlert ? 'light-alert' : 'normal')}
-					{renderMetricCard(
-						"Door State",
-						currentTelemetry.doorOpen ? 'OPEN' : 'CLOSED',
-						null,
-						currentTelemetry.doorOpen ? '🚪' : '🔒',
-						currentTelemetry.doorOpen ? 'alert' : 'normal' // Placeholder for future alert styling
-					)} {/* Removed the duplicate TemperatureChart here */}
+					<div className="card table-card">
+						<div className="table-header">
+							<h4 className="table-title">Recent Logs (MongoDB)</h4>
+						</div>
+						<table className="log-table">
+							<thead>
+								<tr>
+									<th>Timestamp</th>
+									<th>Temp</th>
+									<th>Hum</th>
+									<th>Light</th>
+									<th>Door</th>
+								</tr>
+							</thead>
+							<tbody>
+								{mockLogs.map((log, i) => (
+									<tr key={i}>
+										<td>{log.timestamp}</td>
+										<td>{log.temp}</td>
+										<td>{log.hum}</td>
+										<td>{log.light}</td>
+										<td>{log.door ? '✅' : '❌'}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 
-					{/* Settings Panel spanning across */}
 					<SettingsPanel />
-
-					{/* System Health / Error Log Trigger */}
-					<div style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: '15px', marginBottom: '30px' }}>
-						<button onClick={() => setIsErrorModalOpen(true)} style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.9rem' }}>
-							🔍 View System Error Logs
-						</button>
-					</div>
-
-					{isErrorModalOpen && <ErrorLogModal onClose={() => setIsErrorModalOpen(false)} />}
-				</>
-			) : ( // Show loading message if either currentTelemetry or settings are null
-				<p>Loading sensor data and settings...</p>
-			)}
-		</main>
+				</div>
+			</main>
+		</div>
 	);
 };
 

@@ -1,125 +1,96 @@
 // /home/bvanbeynum/dev/officecommand/frontend/components/TemperatureChart.js
 
-import React, { useRef, useEffect, useState, useLayoutEffect } from 'react'; // Use useLayoutEffect for DOM measurements
+import React, { useRef, useState, useLayoutEffect } from 'react';
 
-// Component to draw a dynamic SVG line chart for historical temperature data
 const TemperatureChart = ({ historicalTemperatures }) => {
-    const temperatures = historicalTemperatures;
-    // State to store chart dimensions dynamically
     const [chartWidth, setChartWidth] = useState(0);
     const [chartHeight, setChartHeight] = useState(0);
     const containerRef = useRef(null);
 
-    useEffect(() => {
-        console.log("TemperatureChart - historicalTemperatures prop updated:", historicalTemperatures);
-    }, [historicalTemperatures]);
-
-    // Update chart dimensions on mount and resize
-    useLayoutEffect(() => { // Changed to useLayoutEffect
+    useLayoutEffect(() => {
         const updateDimensions = () => {
             if (containerRef.current) {
                 setChartWidth(containerRef.current.offsetWidth);
                 setChartHeight(containerRef.current.offsetHeight);
             }
         };
-
         updateDimensions();
-        // Using a debounced resize listener for performance
-        let resizeTimer;
-        const handleResize = () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(updateDimensions, 100);
-        };
-        window.addEventListener('resize', handleResize); // Listen to debounced resize
-        return () => window.removeEventListener('resize', handleResize);
-    }, []); // Empty dependency array means this runs once on mount
+        window.addEventListener('resize', updateDimensions);
+        return () => window.removeEventListener('resize', updateDimensions);
+    }, []);
 
-    useEffect(() => {
-        // Only warn if dimensions remain zero after potential layout effects
-        if (containerRef.current && (chartWidth === 0 || chartHeight === 0)) {
-            console.warn("TemperatureChart: Dimensions are zero. Chart may not be visible.", { chartWidth, chartHeight });
-        } else {
-            console.log("TemperatureChart dimensions:", { chartWidth, chartHeight });
-        }
-    }, [chartWidth, chartHeight]);
-
-    // Filter out invalid data points and extract relevant values
-    const validTemperatures = temperatures
-        .filter(dataPoint =>
-            dataPoint &&
-            typeof dataPoint.temperature === 'number' &&
-            !isNaN(dataPoint.temperature) &&
-            dataPoint.timestamp
-        )
-        .map(dataPoint => ({
-            temperature: dataPoint.temperature,
-            timestamp: new Date(dataPoint.timestamp).getTime()
+    const validTemperatures = historicalTemperatures
+        .filter(d => d && typeof d.temperature === 'number' && !isNaN(d.temperature) && d.timestamp)
+        .map(d => ({
+            temperature: d.temperature,
+            timestamp: new Date(d.timestamp).getTime()
         }));
 
-    // Determine min/max values for scaling using only valid data
-    const minTemp = Math.min(...validTemperatures.map(dataPoint => dataPoint.temperature));
-    const maxTemp = Math.max(...validTemperatures.map(dataPoint => dataPoint.temperature));
-    // Add a small buffer to min/max temp for better visual representation
-    const tempPadding = (maxTemp - minTemp) * 0.1 || 1; // 10% padding or 1 degree if range is 0
+    if (validTemperatures.length < 2 || chartWidth === 0 || chartHeight === 0) {
+        return <div ref={containerRef} style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>No historical data</div>;
+    }
+
+    const minTemp = Math.min(...validTemperatures.map(d => d.temperature));
+    const maxTemp = Math.max(...validTemperatures.map(d => d.temperature));
+    const tempPadding = (maxTemp - minTemp) * 0.2 || 2;
     const displayMinTemp = minTemp - tempPadding;
     const displayMaxTemp = maxTemp + tempPadding;
-    const tempRange = displayMaxTemp - displayMinTemp === 0 ? 1 : displayMaxTemp - displayMinTemp;
+    const tempRange = displayMaxTemp - displayMinTemp;
 
-    console.log("Temperature data range:", { minTemp, maxTemp, displayMinTemp, displayMaxTemp, tempRange });
+    const minTimestamp = Math.min(...validTemperatures.map(d => d.timestamp));
+    const maxTimestamp = Math.max(...validTemperatures.map(d => d.timestamp));
+    const timeRange = maxTimestamp - minTimestamp;
 
-    // Get min/max timestamps for x-axis scaling
-    const minTimestamp = Math.min(...validTemperatures.map(dataPoint => dataPoint.timestamp));
-    const maxTimestamp = Math.max(...validTemperatures.map(dataPoint => dataPoint.timestamp));
-    const timeRange = maxTimestamp - minTimestamp === 0 ? 1 : maxTimestamp - minTimestamp; // Avoid division by zero
+    const margin = { top: 10, right: 10, bottom: 20, left: 35 };
+    const innerWidth = chartWidth - margin.left - margin.right;
+    const innerHeight = chartHeight - margin.top - margin.bottom;
 
-    console.log("Timestamp range:", { minTimestamp: new Date(minTimestamp).toLocaleString(), maxTimestamp: new Date(maxTimestamp).toLocaleString(), timeRange });
+    const points = validTemperatures.map(d => {
+        const x = margin.left + ((d.timestamp - minTimestamp) / timeRange) * innerWidth;
+        const y = margin.top + innerHeight - ((d.temperature - displayMinTemp) / tempRange) * innerHeight;
+        return { x, y };
+    });
 
-    // Margins for padding within the SVG
-    const margin = { top: 20, right: 30, bottom: 30, left: 50 };
-    // Ensure innerWidth and innerHeight are not negative
-    const innerWidth = Math.max(0, chartWidth - margin.left - margin.right);
-    const innerHeight = Math.max(0, chartHeight - margin.top - margin.bottom);
-
-    console.log("Chart inner dimensions:", { innerWidth, innerHeight });
-
-    // Generate SVG path for the line chart
-    const linePath = validTemperatures.map((dataPoint, index) => {
-        const x = margin.left + ((dataPoint.timestamp - minTimestamp) / timeRange) * innerWidth;
-        const y = margin.top + innerHeight - ((dataPoint.temperature - displayMinTemp) / tempRange) * innerHeight;
-        return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
-    }).join(' ');
-
-    console.log("Generated SVG path:", linePath);
+    const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+    const areaPath = `${linePath} L ${points[points.length-1].x} ${margin.top + innerHeight} L ${points[0].x} ${margin.top + innerHeight} Z`;
 
     return (
-		<div className="chart-inner-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '250px' }}>
-			<h3 className="chart-title">Temperature History</h3>
-			<div ref={containerRef} className="chart-container" style={{ flexGrow: 1, position: 'relative' }}>
-				{(validTemperatures.length < 2 || chartWidth === 0 || chartHeight === 0) ? (
-					<div className="chart-container no-data">
-						{chartWidth === 0 || chartHeight === 0 ? "Chart area not visible or zero dimensions." : "Not enough valid data points for a line chart (need at least 2)."}
-					</div>
-				) : (
-					<svg width="100%" height="100%" viewBox={`0 0 ${chartWidth} ${chartHeight}`} preserveAspectRatio="none">
-						{/* X-axis */}
-						<line x1={margin.left} y1={margin.top + innerHeight} x2={margin.left + innerWidth} y2={margin.top + innerHeight} stroke="var(--color-text-secondary)" strokeWidth="1" />
-						{/* Y-axis */}
-						<line x1={margin.left} y1={margin.top} x2={margin.left} y2={margin.top + innerHeight} stroke="var(--color-text-secondary)" strokeWidth="1" />
+        <div ref={containerRef} style={{ height: '120px', width: '100%', position: 'relative' }}>
+            <svg width="100%" height="100%" viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+                <defs>
+                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="var(--color-accent-blue)" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="var(--color-accent-blue)" stopOpacity="0" />
+                    </linearGradient>
+                </defs>
+                
+                {/* Horizontal grid lines */}
+                {[0, 0.5, 1].map(v => (
+                    <line 
+                        key={v}
+                        x1={margin.left} 
+                        y1={margin.top + innerHeight * v} 
+                        x2={margin.left + innerWidth} 
+                        y2={margin.top + innerHeight * v} 
+                        stroke="var(--color-border)" 
+                        strokeWidth="1" 
+                        strokeDasharray="4"
+                    />
+                ))}
 
-						{/* Line path */}
-						<path d={linePath} fill="none" stroke="var(--color-accent-blue)" strokeWidth="2" />
+                <path d={areaPath} fill="url(#chartGradient)" />
+                <path d={linePath} fill="none" stroke="var(--color-accent-blue)" strokeWidth="2" />
 
-						{/* Y-axis labels (example: min/max) */}
-						<text x={margin.left - 10} y={margin.top + innerHeight} textAnchor="end" dominantBaseline="middle" className="chart-label">{displayMinTemp.toFixed(1)}°F</text>
-						<text x={margin.left - 10} y={margin.top} textAnchor="end" dominantBaseline="middle" className="chart-label">{displayMaxTemp.toFixed(1)}°F</text>
+                <text x={margin.left - 8} y={margin.top} textAnchor="end" dominantBaseline="middle" fill="var(--color-text-muted)" fontSize="10">{displayMaxTemp.toFixed(0)}°F</text>
+                <text x={margin.left - 8} y={margin.top + innerHeight} textAnchor="end" dominantBaseline="middle" fill="var(--color-text-muted)" fontSize="10">{displayMinTemp.toFixed(0)}°F</text>
 
-						{/* X-axis labels (example: start/end time) */}
-						<text x={margin.left} y={margin.top + innerHeight + 10} textAnchor="start" dominantBaseline="hanging" className="chart-label">{new Date(minTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</text>
-						<text x={chartWidth - margin.right} y={margin.top + innerHeight + 10} textAnchor="end" dominantBaseline="hanging" className="chart-label">{new Date(maxTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</text>
-					</svg>
-				)}
-			</div>
-		</div>
+                <text x={margin.left} y={chartHeight - 4} textAnchor="start" fill="var(--color-text-muted)" fontSize="10">06hr</text>
+                <text x={margin.left + innerWidth * 0.25} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">08hr</text>
+                <text x={margin.left + innerWidth * 0.5} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">10hr</text>
+                <text x={margin.left + innerWidth * 0.75} y={chartHeight - 4} textAnchor="middle" fill="var(--color-text-muted)" fontSize="10">16hr</text>
+                <text x={margin.left + innerWidth} y={chartHeight - 4} textAnchor="end" fill="var(--color-text-muted)" fontSize="10">24hr</text>
+            </svg>
+        </div>
     );
 };
 

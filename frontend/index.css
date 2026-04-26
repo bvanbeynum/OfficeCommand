@@ -1,480 +1,443 @@
 /* Import modern web font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* Global dark-mode CSS variables palette */
+/* Global dark-mode CSS variables palette matching the image */
 :root {
     /* Backgrounds */
-    --color-background-primary: #121212; /* Deep dark grey for main background */
-    --color-background-secondary: #1e1e1e; /* Slightly lighter dark grey for card/panel backgrounds */
-    --color-background-tertiary: #2a2a2a; /* Even lighter for interactive elements */
-
+    --color-background-primary: #0f172a; /* Deep navy/slate background */
+    --color-background-card: #1e293b; /* Slightly lighter slate for cards */
+    --color-background-hover: #334155;
+    
     /* Text colors */
-    --color-text-primary: #e0e0e0; /* Light grey for main text */
-    --color-text-secondary: #a0a0a0; /* Muted grey for secondary text */
+    --color-text-primary: #f8fafc; /* Near white */
+    --color-text-secondary: #94a3b8; /* Muted slate/grey */
+    --color-text-muted: #64748b;
 
-    /* Accent colors - sleek and harmonious */
-    --color-accent-blue: #007bff; /* Bright blue, but can be muted or desaturated for dark mode */
-    --color-accent-green: #28a745; /* Green for positive states */
-    --color-accent-teal: #17a2b8; /* Teal for informational states */
-    --color-accent-purple: #6f42c1; /* Purple for unique elements */
-    --color-accent-yellow: #ffc107; /* Yellow for warnings */
-
-    --color-accent-orange: #ffc107; /* Orange for warnings */
-    --color-accent-red: #dc3545; /* Red for critical alerts/errors */
-    --color-accent-purple: #6f42c1; /* Purple for unique elements */
-
-    /* Borders, shadows, etc. */
-    --color-border: #333;
-    --color-shadow: rgba(0, 0, 0, 0.5);
+    /* Accent colors */
+    --color-accent-blue: #3b82f6;
+    --color-accent-green: #22c55e;
+    --color-accent-red: #ef4444;
+    --color-accent-yellow: #eab308;
+    
+    /* UI Elements */
+    --color-border: #334155;
+    --color-shadow: rgba(0, 0, 0, 0.4);
+    
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Apply Inter font to the body and base styles */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-main);
     color: var(--color-text-primary);
     background-color: var(--color-background-primary);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
 }
 
 .app-container {
-	min-height: 100vh; /* Ensure app takes full height */
-}
-
-.dashboard-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Increased min-width to force collapse earlier */
-	gap: 20px;
-	padding: 20px;
-	min-height: 100vh;
-	align-content: start; /* Prevents rows from stretching to fill the full viewport height */
-}
-
-/* MetricCard styles */
-.metric-card {
-    background: var(--color-background-secondary);
-    border-radius: 12px;
-    padding: 20px;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 150px; /* Ensure cards have a minimum height */
-    color: var(--color-text-primary);
-    position: relative;
-    overflow: hidden; /* For gradient effects */
-    box-shadow: 0 4px 8px var(--color-shadow);
-    border: 1px solid var(--color-border);
 }
 
-/* Base gradient for all cards, can be overridden by specific metric-card--status classes */
-.metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    background: linear-gradient(135deg, var(--color-background-secondary) 0%, rgba(30, 30, 30, 0.8) 100%);
-    opacity: 0.8;
+/* Dashboard Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px;
+}
+
+.header-title-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+}
+
+.header-subtitle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--color-accent-blue);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: var(--color-text-secondary);
+}
+
+.header-icon {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
+
+.header-icon:hover {
+    color: var(--color-text-primary);
+}
+
+/* Main Layout Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 320px 400px 1fr;
+    gap: 24px;
+    padding: 0 40px 40px 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.column-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.dashboard-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Base Card Style */
+.card {
+    background: var(--color-background-card);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 6px -1px var(--color-shadow);
+}
+
+/* Metric Card Overrides */
+.metric-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .metric-card-header {
     display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
-.metric-card-icon {
-    font-size: 1.5em; /* Placeholder for icon styling */
-    margin-right: 10px;
-}
 .metric-card-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
     margin: 0;
-    font-size: 1.1em;
-    color: var(--color-text-secondary);
 }
 
-.metric-card-value-container {
+.metric-card-content {
     display: flex;
     align-items: baseline;
+    gap: 4px;
 }
 
 .metric-card-value {
-    font-size: 2.5em;
+    font-size: 2.25rem;
     font-weight: 700;
-    color: var(--color-text-primary);
-    line-height: 1;
 }
 
 .metric-card-unit {
-    margin-left: 5px;
-    font-size: 1em;
-    color: var(--color-text-secondary);
-}
-
-.metric-card-footer {
-    font-size: 0.9em;
-    color: var(--color-text-secondary);
-    margin-top: 10px;
-}
-
-/* Chart Specific Styles */
-.chart-card {
-    background: var(--color-background-secondary);
-    border-radius: 12px;
-    padding: 20px;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: var(--color-text-primary);
-    box-shadow: 0 4px 8px var(--color-shadow);
-    border: 1px solid var(--color-border);
-    grid-column: span 2; /* Make chart span two columns in the grid */
-    min-height: 300px;
+}
+
+.metric-card-subtitle {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+/* Large Temperature Card */
+.metric-card-large {
+    padding: 24px;
+}
+
+.metric-card-large .metric-card-value {
+    font-size: 4rem;
+}
+
+.ideal-indicator {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-accent-green);
+    margin-left: auto;
 }
 
-.chart-title {
-    margin-top: 0;
-    color: var(--color-text-primary);
-    margin-bottom: 15px;
+.ideal-icon {
+    font-size: 2.5rem;
 }
 
-.chart-container {
-    flex-grow: 1; /* Allow the chart container to take available space */
-    position: relative; /* For potential absolute positioning of tooltips etc. */
+.ideal-text {
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-/* Styling for when no data is available */
-.chart-container.no-data {
+/* AC Control Panel */
+.ac-control-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.ac-stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+}
+
+.ac-stat-value {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-dot.on { background-color: var(--color-accent-green); }
+
+.target-temp-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    color: var(--color-text-secondary);
-    font-style: italic;
+    gap: 24px;
+    margin: 20px 0;
 }
 
-.chart-title {
-    margin-top: 0;
-    color: var(--color-text-primary);
-    margin-bottom: 15px;
-}
-
-/* Styles for SVG text labels within charts */
-.chart-label {
-    font-size: 0.8em; /* Smaller font size for axis labels */
-    fill: var(--color-text-secondary); /* Use a consistent text color from variables */
-}
-
-/* Specific alert styling for Light Metric Card when threshold is exceeded */
-.metric-card--light-alert {
-    border-color: var(--color-accent-yellow);
-    animation: pulse-yellow 1.5s infinite ease-in-out;
-}
-
-.metric-card--light-alert::before {
-    background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, var(--color-background-secondary) 100%);
-    opacity: 1;
-}
-
-@keyframes pulse-yellow {
-    0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
-}
-
-/* Global alert for door state (already defined) */
-
-/* MetricCard Status Specific Styles */
-.metric-card--alert {
-    border-color: var(--color-accent-red);
-    animation: pulse-red 1.5s infinite ease-in-out;
-}
-
-.metric-card--alert::before {
-    background: linear-gradient(135deg, rgba(220, 53, 69, 0.2) 0%, var(--color-background-secondary) 100%);
-    opacity: 1;
-}
-
-@keyframes pulse-red {
-    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
-}
-
-/* New wrapper for the chart itself within the chart-card */
-.chart-inner-wrapper {
-    flex-grow: 1; /* Allow it to take up available space within its flex parent (.chart-card) */
-}
-
-/* Segmented Toggle Control for Charts */
-.timeframe-toggle-control {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
-	padding-bottom: 0; /* Adjust padding as chart content is inside */
-}
-
-.timeframe-buttons {
-	display: flex;
-	gap: 10px;
-	justify-content: flex-end; /* Align buttons to the right */
-	margin-bottom: 15px;
-}
-
-.timeframe-button {
-	background-color: var(--color-background-tertiary);
-	color: var(--color-text-secondary);
-	border: 1px solid var(--color-border);
-	padding: 8px 15px;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: all 0.2s ease-in-out;
-	font-weight: 500;
-}
-
-/* Active button style */
-.timeframe-button.active {
-	background-color: var(--color-accent-blue);
-	color: white;
-	border-color: var(--color-accent-blue);
-}
-
-/* Hover effect for buttons */
-.timeframe-button:not(.active):hover {
-	background-color: var(--color-background-primary);
-	color: var(--color-text-primary);
-}
-
-
-/* Micro-animation utility classes */
-/* This class provides a smooth transition effect for properties like transform, box-shadow, color, background-color */
-.transition-ease-in-out {
-    transition: all 0.3s ease-in-out;
-}
-
-/* Apply a subtle scaling effect on hover */
-.hover-scale-103:hover {
-    transform: scale(1.03);
-}
-
-/* Apply a subtle box-shadow expansion on hover */
-.hover-shadow-expand:hover {
-    box-shadow: 0 8px 16px var(--color-shadow);
-}
-
-.auth-modal-overlay {
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
-    display: flex; justify-content: center; align-items: center;
-    z-index: 1000; /* Ensure it's on top */
-}
-
-.auth-modal-content {
-    background: var(--primary-accent);
-    padding: 30px;
+.temp-btn {
+    width: 44px;
+    height: 44px;
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    color: var(--text-light);
+    border: none;
+    background: var(--color-accent-blue);
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s;
 }
 
-.auth-modal-content input[type="password"],
-.auth-modal-content button {
-	width: 100%;
-	padding: 10px 15px;
-	border-radius: 5px;
-	border: 1px solid var(--color-border);
-	font-size: 1em;
-	box-sizing: border-box; /* Include padding and border in the element's total width and height */
-	background-color: var(--color-background-tertiary);
-	color: var(--color-text-primary);
+.temp-btn:hover { opacity: 0.9; }
+
+.target-temp-display {
+    font-size: 3.5rem;
+    font-weight: 700;
 }
 
-.auth-modal-content button {
-	background-color: var(--color-accent-blue);
-	color: white;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
+.control-group {
+    margin-top: 16px;
 }
 
-.auth-modal-content button:hover {
-	background-color: #0056b3; /* Darker shade of blue on hover */
+.control-label {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    display: block;
 }
 
-.auth-modal-content h2 {
-    margin-top: 0; margin-bottom: 20px;
-    color: var(--color-accent-blue);
+.btn-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #0f172a;
+    padding: 4px;
+    border-radius: 8px;
+    gap: 2px;
 }
 
-.auth-modal-content form {
-    display: flex; flex-direction: column; gap: 15px;
+.group-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    padding: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.error-message {
-    color: var(--error-color);
-    margin-top: 10px;
-    font-size: 14px;
-	background-color: rgba(220, 53, 69, 0.2); /* Red background with transparency */
-	padding: 8px;
-	border-radius: 4px;
+.group-btn.active {
+    background: var(--color-accent-blue);
+    color: white;
 }
 
-/* Adjusting the placeholder styles for AuthModal content variables */
-.auth-modal-content {
-    background: var(--color-background-secondary); /* Use a defined dark mode background */
-    color: var(--color-text-primary); /* Use a defined dark mode text color */
+.power-toggle-container {
+    margin-top: 24px;
+    background: #334155;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.auth-modal-content h2 {
-    color: var(--color-accent-blue); /* Use a defined accent color */
+.power-label {
+    font-weight: 700;
+    font-size: 0.875rem;
 }
 
-.error-message {
-    color: var(--color-accent-red); /* Use a defined error color */
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
 }
 
-/* Error Modal Specific Styles */
-.error-modal-content {
-	max-width: 900px;
-	width: 90%;
-	max-height: 80vh;
-	display: flex;
-	flex-direction: column;
-	text-align: left; /* Override auth-modal-content center alignment */
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #1e293b;
+    transition: .4s;
+    border-radius: 24px;
 }
 
-.modal-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 1.5rem;
-	border-bottom: 1px solid var(--color-border);
-	padding-bottom: 1rem;
-	width: 100%;
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
 }
 
-.modal-header h2 {
-	margin: 0;
-	color: var(--color-text-primary);
+input:checked + .slider { background-color: var(--color-accent-blue); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* System Data & Logs Column */
+.table-card {
+    padding: 0;
+    overflow: hidden;
 }
 
-/* Use specific selector to override the blue button styles in .auth-modal-content */
-.auth-modal-content button.modal-close-button {
-	cursor: pointer;
-	background-color: transparent;
-	border: none;
-	color: var(--color-text-secondary);
-	font-size: 1.5rem;
-	line-height: 1;
-	padding: 0;
-	width: auto;
+.table-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border);
 }
 
-.auth-modal-content button.modal-close-button:hover {
-	background-color: transparent;
-	color: var(--color-text-primary);
+.table-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0;
 }
 
-.empty-state-message {
-	text-align: center;
-	color: var(--color-text-secondary);
-	padding: 2rem;
+.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
 }
 
-.error-table-container {
-	overflow-y: auto;
-	flex-grow: 1;
-	width: 100%;
+.log-table th {
+    text-align: left;
+    padding: 12px 20px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--color-border);
 }
 
-.error-table {
-	width: 100%;
-	border-collapse: collapse;
-	text-align: left;
-	table-layout: fixed; /* Ensures columns respect width limits and wrap text */
+.log-table td {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--color-border);
 }
 
-.error-table th {
-	padding: 10px 8px;
-	border-bottom: 1px solid var(--color-border);
-	color: var(--color-text-secondary);
+.log-table tr:last-child td { border-bottom: none; }
+
+/* Settings Panel */
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
 }
 
-/* Assign column widths */
-.error-table th:nth-child(1) { width: 25%; }
-.error-table th:nth-child(2) { width: 20%; }
-.error-table th:nth-child(3) { width: 55%; }
-
-.error-table-row {
-	border-bottom: 1px solid var(--color-border);
+.settings-label {
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
-.error-table-row:last-child {
-	border-bottom: none;
+.settings-description {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
 }
 
-.error-table td {
-	padding: 12px 8px;
-	font-size: 0.85rem;
-	color: var(--color-text-primary);
-	vertical-align: top;
-	word-wrap: break-word;
-	word-break: break-word;
+/* Range Input Styling */
+input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
 }
 
-.error-timestamp {
-	color: var(--color-text-secondary);
+input[type=range]:focus { outline: none; }
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: #334155;
+    border-radius: 2px;
 }
 
-.error-message-text {
-	color: var(--color-accent-red);
-	display: block;
+input[type=range]::-webkit-slider-thumb {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -6px;
 }
 
-.error-details-pre {
-	margin-top: 8px;
-	padding: 8px;
-	background: var(--color-background-tertiary);
-	border-radius: 4px;
-	font-size: 0.75rem;
-	color: var(--color-text-secondary);
-	white-space: pre-wrap; /* Forces the stack trace to wrap instead of scrolling horizontally */
-	word-wrap: break-word;
+/* Mobile responsive */
+@media (max-width: 1100px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
-/* System Health Button */
-.system-health-container {
-	grid-column: 1 / -1;
-	text-align: center;
-	margin-top: 15px;
-	margin-bottom: 30px;
-}
-
-.system-health-button {
-	background-color: var(--color-background-tertiary);
-	border: 1px solid var(--color-border);
-	color: var(--color-text-secondary);
-	padding: 8px 16px;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 0.9rem;
-	transition: all 0.2s ease-in-out;
-}
-
-.system-health-button:hover {
-	background-color: var(--color-background-secondary);
-	color: var(--color-text-primary);
-	border-color: var(--color-text-secondary);
-	transform: scale(1.02);
-}
-
-/* Mobile Responsive Media Queries */
-@media (max-width: 850px) {
-	.dashboard-grid {
-		grid-template-columns: 1fr !important;
-		padding: 10px;
-	}
-	
-	.chart-card {
-		grid-column: 1 / -1 !important; /* Prevent the chart from forcing a 2-column width on mobile */
-	}
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px 20px 20px;
+    }
+    .dashboard-header {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
 }
