@@ -116,6 +116,24 @@ body {
     margin-top: 10px;
 }
 
+/* MetricCard Status Specific Styles */
+.metric-card--alert {
+    border-color: var(--color-accent-red);
+    animation: pulse-red 1.5s infinite ease-in-out;
+}
+
+.metric-card--alert::before {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.2) 0%, var(--color-background-secondary) 100%);
+    opacity: 1;
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+
 /* Micro-animation utility classes */
 /* This class provides a smooth transition effect for properties like transform, box-shadow, color, background-color */
 .transition-ease-in-out {
