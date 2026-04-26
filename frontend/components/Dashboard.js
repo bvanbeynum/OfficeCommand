@@ -12,10 +12,10 @@ const Dashboard = () => {
 	const { currentTelemetry, historicalData } = useSensor();
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
-	const mockLogs = [
-		{ timestamp: '2023-08-25 16:30', temp: '73°F', hum: '51%', light: 'OFF', door: true },
-		{ timestamp: '2023-08-25 15:30', temp: '73°F', hum: '48%', light: 'OFF', door: true },
-	];
+	// Get the last 5 logs from historical data and sort them descending by timestamp
+	const recentLogs = [...(historicalData.logs || [])]
+		.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+		.slice(0, 5);
 
 	return (
 		<div className="app-container">
@@ -111,15 +111,21 @@ const Dashboard = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{mockLogs.map((log, i) => (
-									<tr key={i}>
-										<td>{log.timestamp}</td>
-										<td>{log.temp}</td>
-										<td>{log.hum}</td>
-										<td>{log.light}</td>
-										<td>{log.door ? '✅' : '❌'}</td>
+								{recentLogs.length > 0 ? (
+									recentLogs.map((log, i) => (
+										<tr key={i}>
+											<td>{new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+											<td>{log.temperature?.toFixed(0)}°F</td>
+											<td>{log.humidity?.toFixed(0)}%</td>
+											<td>{log.light < 150 ? 'OFF' : 'ON'}</td>
+											<td>{log.doorOpen ? '✅' : '🔒'}</td>
+										</tr>
+									))
+								) : (
+									<tr>
+										<td colSpan="5" style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-muted)' }}>No data available</td>
 									</tr>
-								))}
+								)}
 							</tbody>
 						</table>
 					</div>
