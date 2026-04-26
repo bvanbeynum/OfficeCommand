@@ -1,0 +1,48 @@
+/* Import modern web font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
+
+/* Global dark-mode CSS variables palette */
+:root {
+    /* Backgrounds */
+    --color-background-primary: #121212; /* Deep dark grey for main background */
+    --color-background-secondary: #1e1e1e; /* Slightly lighter dark grey for card/panel backgrounds */
+    --color-background-tertiary: #2a2a2a; /* Even lighter for interactive elements */
+
+    /* Text colors */
+    --color-text-primary: #e0e0e0; /* Light grey for main text */
+    --color-text-secondary: #a0a0a0; /* Muted grey for secondary text */
+
+    /* Accent colors - sleek and harmonious */
+    --color-accent-blue: #007bff; /* Bright blue, but can be muted or desaturated for dark mode */
+    --color-accent-green: #28a745; /* Green for positive states */
+    --color-accent-orange: #ffc107; /* Orange for warnings */
+    --color-accent-red: #dc3545; /* Red for critical alerts/errors */
+    --color-accent-purple: #6f42c1; /* Purple for unique elements */
+
+    /* Borders, shadows, etc. */
+    --color-border: #333;
+    --color-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* Apply Inter font to the body and base styles */
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--color-text-primary);
+    background-color: var(--color-background-primary);
+}
+
+/* Micro-animation utility classes */
+/* This class provides a smooth transition effect for properties like transform, box-shadow, color, background-color */
+.transition-ease-in-out {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Apply a subtle scaling effect on hover */
+.hover-scale-103:hover {
+    transform: scale(1.03);
+}
+
+/* Apply a subtle box-shadow expansion on hover */
+.hover-shadow-expand:hover {
+    box-shadow: 0 8px 16px var(--color-shadow);
+}

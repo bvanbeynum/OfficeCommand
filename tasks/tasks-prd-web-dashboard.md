@@ -30,8 +30,8 @@
 	- [x] 1.3 Scaffold `index.html`, `index.js`, and `App.js`.
 	- [x] 1.4 Verify by creating docker image and having user verify, and check into git.
 - [ ] 2.0 Global Styling & Design System Implementation
-	- [ ] 2.1 Establish a dark-mode CSS variables palette in `index.css` (deep backgrounds, sleek harmonious accent colors).
-	- [ ] 2.2 Import and apply a modern web font (e.g., Inter, Roboto).
+	- [x] 2.1 Establish a dark-mode CSS variables palette in `index.css` (deep backgrounds, sleek harmonious accent colors).
+	- [x] 2.2 Import and apply a modern web font (e.g., Inter, Roboto).
 	- [ ] 2.3 Define reusable micro-animation utility classes (e.g., subtle drop-shadow expansions, hover scaling).
 	- [ ] 2.4 Create docker image, verify with user, and check into git.
 - [ ] 3.0 API Services & Global State Management (Context)
