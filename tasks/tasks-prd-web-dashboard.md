@@ -38,7 +38,7 @@
 	- [x] 3.1 Create `api.js` to standardize HTTP GET/POST calls dealing with `{ "success", "data", "error" }` payloads.
 	- [x] 3.2 Build functions for `fetchCurrentSensors()`, `fetchHistory(timeframe)`, `postSettings(data)`, and `postError(err)`.
 	- [x] 3.3 Create a `SensorContext.js` provider mapping `useState` variables for telemetry, settings, and historical arrays.
-	- [ ] 3.4 Implement a `useEffect` polling mechanism inside context to call `fetchCurrentSensors()` every 10 seconds (only if authenticated).
+	- [x] 3.4 Implement a `useEffect` polling mechanism inside context to call `fetchCurrentSensors()` every 10 seconds (only if authenticated).
 	- [ ] 3.5 Verify with Browser Subagent, and check into git.
 - [ ] 4.0 Authentication Barrier Implementation
 	- [ ] 4.1 Build an `AuthModal.js` component with a simple password input and submit handler.
