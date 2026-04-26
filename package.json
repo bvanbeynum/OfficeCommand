@@ -5,7 +5,7 @@
   "scripts": {
 		"build": "NODE_ENV=production webpack --config frontend/webpack.prod.js",
 		"start": "NODE_ENV=production node server.js",
-		"dev": "NODE_ENV=development node server.js"
+		"dev": "NODE_ENV=development node --watch server.js"
   },
   "keywords": [],
   "author": "",
