@@ -31,6 +31,18 @@ body {
     background-color: var(--color-background-primary);
 }
 
+.app-container {
+	min-height: 100vh; /* Ensure app takes full height */
+}
+
+.dashboard-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid columns */
+	gap: 20px;
+	padding: 20px;
+	min-height: 100vh;
+}
+
 /* Micro-animation utility classes */
 /* This class provides a smooth transition effect for properties like transform, box-shadow, color, background-color */
 .transition-ease-in-out {
@@ -48,16 +60,10 @@ body {
 }
 
 .auth-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000; /* Ensure it's on top */
 }
 
 .auth-modal-content {
@@ -69,19 +75,57 @@ body {
     color: var(--text-light);
 }
 
+.auth-modal-content input[type="password"],
+.auth-modal-content button {
+	width: 100%;
+	padding: 10px 15px;
+	border-radius: 5px;
+	border: 1px solid var(--color-border);
+	font-size: 1em;
+	box-sizing: border-box; /* Include padding and border in the element's total width and height */
+	background-color: var(--color-background-tertiary);
+	color: var(--color-text-primary);
+}
+
+.auth-modal-content button {
+	background-color: var(--color-accent-blue);
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.auth-modal-content button:hover {
+	background-color: #0056b3; /* Darker shade of blue on hover */
+}
+
 .auth-modal-content h2 {
-    margin-top: 0;
-    color: var(--secondary-accent);
+    margin-top: 0; margin-bottom: 20px;
+    color: var(--color-accent-blue);
 }
 
 .auth-modal-content form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: flex; flex-direction: column; gap: 15px;
 }
 
 .error-message {
     color: var(--error-color);
     margin-top: 10px;
     font-size: 14px;
+	background-color: rgba(220, 53, 69, 0.2); /* Red background with transparency */
+	padding: 8px;
+	border-radius: 4px;
+}
+
+/* Adjusting the placeholder styles for AuthModal content variables */
+.auth-modal-content {
+    background: var(--color-background-secondary); /* Use a defined dark mode background */
+    color: var(--color-text-primary); /* Use a defined dark mode text color */
+}
+
+.auth-modal-content h2 {
+    color: var(--color-accent-blue); /* Use a defined accent color */
+}
+
+.error-message {
+    color: var(--color-accent-red); /* Use a defined error color */
 }
