@@ -34,12 +34,12 @@
 	- [x] 2.2 Import and apply a modern web font (e.g., Inter, Roboto).
 	- [x] 2.3 Define reusable micro-animation utility classes (e.g., subtle drop-shadow expansions, hover scaling).
 	- [x] 2.4 Create docker image, verify with user, and check into git.
-- [ ] 3.0 API Services & Global State Management (Context)
+- [x] 3.0 API Services & Global State Management (Context)
 	- [x] 3.1 Create `api.js` to standardize HTTP GET/POST calls dealing with `{ "success", "data", "error" }` payloads.
 	- [x] 3.2 Build functions for `fetchCurrentSensors()`, `fetchHistory(timeframe)`, `postSettings(data)`, and `postError(err)`.
 	- [x] 3.3 Create a `SensorContext.js` provider mapping `useState` variables for telemetry, settings, and historical arrays.
 	- [x] 3.4 Implement a `useEffect` polling mechanism inside context to call `fetchCurrentSensors()` every 10 seconds (only if authenticated).
-	- [ ] 3.5 Verify with Browser Subagent, and check into git.
+	- [x] 3.5 Verify with Browser Subagent, and check into git.
 - [ ] 4.0 Authentication Barrier Implementation
 	- [ ] 4.1 Build an `AuthModal.js` component with a simple password input and submit handler.
 	- [ ] 4.2 Update `App.js` to conditionally render `AuthModal` if access is false.
