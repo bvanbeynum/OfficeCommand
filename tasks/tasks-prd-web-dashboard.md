@@ -47,7 +47,7 @@
 	- [x] 4.4 Verify with Browser Subagent, and check into git.
  - [ ] 5.0 Dashboard Layout & Real-Time Metric Cards
 	- [x] 5.1 Implement a grid-based `Dashboard.js` component as the application core.
-	- [ ] 5.2 Build a highly visual `MetricCard.js` component utilizing gradients and animations.
+	- [x] 5.2 Build a highly visual `MetricCard.js` component utilizing gradients and animations.
 	- [ ] 5.3 Instantiate distinct cards for Temperature, Humidity, Light, and Door State, piping live Context data into them.
 	- [ ] 5.4 Engineer visual alert states: update MetricCard styling dramatically (e.g., border pulsing red) when Door is OPEN or Light > Threshold.
 	- [ ] 5.5 Verify with Browser Subagent, and check into git.
