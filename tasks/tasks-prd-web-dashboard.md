@@ -45,12 +45,12 @@
 	- [x] 4.2 Update `App.js` to conditionally render `AuthModal` if access is false.
 	- [x] 4.3 Ensure the `SensorContext` polling interval only activates upon successful password matching.
 	- [x] 4.4 Verify with Browser Subagent, and check into git.
- - [ ] 5.0 Dashboard Layout & Real-Time Metric Cards
+ - [x] 5.0 Dashboard Layout & Real-Time Metric Cards
 	- [x] 5.1 Implement a grid-based `Dashboard.js` component as the application core.
 	- [x] 5.2 Build a highly visual `MetricCard.js` component utilizing gradients and animations.
 	- [x] 5.3 Instantiate distinct cards for Temperature, Humidity, Light, and Door State, piping live Context data into them.
 	- [x] 5.4 Engineer visual alert states: update MetricCard styling dramatically (e.g., border pulsing red) when Door is OPEN or Light > Threshold.
-	- [ ] 5.5 Verify with Browser Subagent, and check into git.
+	- [x] 5.5 Verify with Browser Subagent, and check into git.
 - [ ] 6.0 Historical Trend Visualization (Line Charts)
 	- [ ] 6.1 Build `TemperatureChart.js` directly drawing a dynamic SVG line chart to map the historical data array, avoiding any third-party charting libraries.
 	- [ ] 6.2 Style the SVG paths (stroke, fill) to match the dark-mode aesthetic (e.g., distinct scalable lines).
