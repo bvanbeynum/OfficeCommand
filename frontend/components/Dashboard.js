@@ -7,7 +7,7 @@ import { useSensor } from '../context/SensorContext';
 // This component serves as the core layout for the dashboard, using a grid system.
 const Dashboard = () => {
 	// Consume context data for current telemetry
-	const { currentTelemetry } = useSensor();
+	const { currentTelemetry, settings } = useSensor();
 
 	// Helper function to render a metric card or a loading state
 	const renderMetricCard = (title, value, unit, icon, status) => {
@@ -22,13 +22,16 @@ const Dashboard = () => {
 		);
 	};
 
+	// Determine light status based on threshold from settings
+	const isLightAlert = currentTelemetry && settings && currentTelemetry.light > settings.lightThreshold;
+
 	return (
 		<main className="dashboard-grid">
-			{currentTelemetry ? (
+			{currentTelemetry && settings ? ( // Ensure both currentTelemetry and settings are available
 				<>
 					{renderMetricCard("Temperature", currentTelemetry.temperature?.toFixed(1), "°F", "🌡️")}
 					{renderMetricCard("Humidity", currentTelemetry.humidity?.toFixed(1), "%", "💧")}
-					{renderMetricCard("Light", currentTelemetry.light, "lux", "💡")}
+					{renderMetricCard("Light", currentTelemetry.light, "lux", "💡", isLightAlert ? 'light-alert' : 'normal')}
 					{renderMetricCard(
 						"Door State",
 						currentTelemetry.doorOpen ? 'OPEN' : 'CLOSED',
@@ -37,8 +40,8 @@ const Dashboard = () => {
 						currentTelemetry.doorOpen ? 'alert' : 'normal' // Placeholder for future alert styling
 					)}
 				</>
-			) : (
-				<p>Loading sensor data...</p>
+			) : ( // Show loading message if either currentTelemetry or settings are null
+				<p>Loading sensor data and settings...</p>
 			)}
 		</main>
 	);

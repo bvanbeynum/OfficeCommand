@@ -49,7 +49,7 @@
 	- [x] 5.1 Implement a grid-based `Dashboard.js` component as the application core.
 	- [x] 5.2 Build a highly visual `MetricCard.js` component utilizing gradients and animations.
 	- [x] 5.3 Instantiate distinct cards for Temperature, Humidity, Light, and Door State, piping live Context data into them.
-	- [ ] 5.4 Engineer visual alert states: update MetricCard styling dramatically (e.g., border pulsing red) when Door is OPEN or Light > Threshold.
+	- [x] 5.4 Engineer visual alert states: update MetricCard styling dramatically (e.g., border pulsing red) when Door is OPEN or Light > Threshold.
 	- [ ] 5.5 Verify with Browser Subagent, and check into git.
 - [ ] 6.0 Historical Trend Visualization (Line Charts)
 	- [ ] 6.1 Build `TemperatureChart.js` directly drawing a dynamic SVG line chart to map the historical data array, avoiding any third-party charting libraries.

@@ -116,6 +116,25 @@ body {
     margin-top: 10px;
 }
 
+/* Specific alert styling for Light Metric Card when threshold is exceeded */
+.metric-card--light-alert {
+    border-color: var(--color-accent-yellow);
+    animation: pulse-yellow 1.5s infinite ease-in-out;
+}
+
+.metric-card--light-alert::before {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, var(--color-background-secondary) 100%);
+    opacity: 1;
+}
+
+@keyframes pulse-yellow {
+    0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+}
+
+/* Global alert for door state (already defined) */
+
 /* MetricCard Status Specific Styles */
 .metric-card--alert {
     border-color: var(--color-accent-red);
