@@ -344,3 +344,112 @@ body {
 .error-message {
     color: var(--color-accent-red); /* Use a defined error color */
 }
+
+/* Error Modal Specific Styles */
+.error-modal-content {
+	max-width: 900px;
+	width: 90%;
+	max-height: 80vh;
+	display: flex;
+	flex-direction: column;
+	text-align: left; /* Override auth-modal-content center alignment */
+}
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1.5rem;
+	border-bottom: 1px solid var(--color-border);
+	padding-bottom: 1rem;
+	width: 100%;
+}
+
+.modal-header h2 {
+	margin: 0;
+	color: var(--color-text-primary);
+}
+
+/* Use specific selector to override the blue button styles in .auth-modal-content */
+.auth-modal-content button.modal-close-button {
+	cursor: pointer;
+	background-color: transparent;
+	border: none;
+	color: var(--color-text-secondary);
+	font-size: 1.5rem;
+	line-height: 1;
+	padding: 0;
+	width: auto;
+}
+
+.auth-modal-content button.modal-close-button:hover {
+	background-color: transparent;
+	color: var(--color-text-primary);
+}
+
+.empty-state-message {
+	text-align: center;
+	color: var(--color-text-secondary);
+	padding: 2rem;
+}
+
+.error-table-container {
+	overflow-y: auto;
+	flex-grow: 1;
+	width: 100%;
+}
+
+.error-table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+	table-layout: fixed; /* Ensures columns respect width limits and wrap text */
+}
+
+.error-table th {
+	padding: 10px 8px;
+	border-bottom: 1px solid var(--color-border);
+	color: var(--color-text-secondary);
+}
+
+/* Assign column widths */
+.error-table th:nth-child(1) { width: 25%; }
+.error-table th:nth-child(2) { width: 20%; }
+.error-table th:nth-child(3) { width: 55%; }
+
+.error-table-row {
+	border-bottom: 1px solid var(--color-border);
+}
+
+.error-table-row:last-child {
+	border-bottom: none;
+}
+
+.error-table td {
+	padding: 12px 8px;
+	font-size: 0.85rem;
+	color: var(--color-text-primary);
+	vertical-align: top;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+.error-timestamp {
+	color: var(--color-text-secondary);
+}
+
+.error-message-text {
+	color: var(--color-accent-red);
+	display: block;
+}
+
+.error-details-pre {
+	margin-top: 8px;
+	padding: 8px;
+	background: var(--color-background-tertiary);
+	border-radius: 4px;
+	font-size: 0.75rem;
+	color: var(--color-text-secondary);
+	white-space: pre-wrap; /* Forces the stack trace to wrap instead of scrolling horizontally */
+	word-wrap: break-word;
+}

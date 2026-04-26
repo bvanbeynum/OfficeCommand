@@ -1,14 +1,17 @@
 // /home/bvanbeynum/dev/officecommand/frontend/components/Dashboard.js
 
-import React from 'react'; // Removed classNames import
+import React, { useState } from 'react'; // Removed classNames import
 import TemperatureChart from './TemperatureChart'; // Import TemperatureChart
 import MetricCard from './MetricCard'; // Import the MetricCard component
+import SettingsPanel from './SettingsPanel'; // Import SettingsPanel
+import ErrorLogModal from './ErrorLogModal'; // Import ErrorLogModal
 import { useSensor } from '../context/SensorContext';
 
 // This component serves as the core layout for the dashboard, using a grid system.
 const Dashboard = () => {
 	// Consume context data for current telemetry
 	const { currentTelemetry, settings, historicalData, selectedTimeframe, setSelectedTimeframe } = useSensor();
+	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
 	// Helper function to render a metric card or a loading state
 	const renderMetricCard = (title, value, unit, icon, status) => {
@@ -54,6 +57,18 @@ const Dashboard = () => {
 						currentTelemetry.doorOpen ? '🚪' : '🔒',
 						currentTelemetry.doorOpen ? 'alert' : 'normal' // Placeholder for future alert styling
 					)} {/* Removed the duplicate TemperatureChart here */}
+
+					{/* Settings Panel spanning across */}
+					<SettingsPanel />
+
+					{/* System Health / Error Log Trigger */}
+					<div style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: '15px', marginBottom: '30px' }}>
+						<button onClick={() => setIsErrorModalOpen(true)} style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.9rem' }}>
+							🔍 View System Error Logs
+						</button>
+					</div>
+
+					{isErrorModalOpen && <ErrorLogModal onClose={() => setIsErrorModalOpen(false)} />}
 				</>
 			) : ( // Show loading message if either currentTelemetry or settings are null
 				<p>Loading sensor data and settings...</p>

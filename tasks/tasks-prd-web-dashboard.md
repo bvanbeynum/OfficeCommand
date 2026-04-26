@@ -57,10 +57,10 @@
 	- [x] 6.3 Implement a segmented toggle control (1h, 5h, 24h) that triggers `fetchHistory()` and forces the SVG chart to re-render.
 	- [x] 6.4 Verify with Browser Subagent, and check into git.
 - [ ] 7.0 Settings Panel & Global Error Handling UI
-	- [ ] 7.1 Implement `SettingsPanel.js` containing an interactive slider for the light threshold; POST changes to backend on adjustment.
-	- [ ] 7.2 Create an `ErrorBoundary.js` component wrapping the tree. On `componentDidCatch`, POST the error stack trace to the API.
-	- [ ] 7.3 Build an `ErrorLogModal.js` capable of fetching `/api/errors` and presenting a historical table of exceptions.
-	- [ ] 7.4 Verify with Browser Subagent, and check into git.
+	- [x] 7.1 Implement `SettingsPanel.js` containing an interactive slider for the light threshold; POST changes to backend on adjustment.
+	- [x] 7.2 Create an `ErrorBoundary.js` component wrapping the tree. On `componentDidCatch`, POST the error stack trace to the API.
+	- [x] 7.3 Build an `ErrorLogModal.js` capable of fetching `/api/errors` and presenting a historical table of exceptions.
+	- [x] 7.4 Verify with Browser Subagent, and check into git.
 - [ ] 8.0 Responsive Refinement & Final Testing
 	- [ ] 8.1 Write media queries in `index.css` to collapse the Dashboard grid into a single column for mobile viewports.
 	- [ ] 8.2 Perform manual validation: verify password block, test polling without page refreshes, and evaluate visual alert changes dynamically.

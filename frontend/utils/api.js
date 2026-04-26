@@ -88,4 +88,9 @@ const fetchSettings = async () => {
     return response;
 };
 
-export { get, post, fetchCurrentSensors, fetchHistory, postSettings, postError, fetchSettings };
+const fetchErrors = async () => {
+	const response = await get('/errors');
+	return response;
+};
+
+export { get, post, fetchCurrentSensors, fetchHistory, postSettings, postError, fetchSettings, fetchErrors };
