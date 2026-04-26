@@ -1,5 +1,6 @@
 const express = require('express');
 const { SensorLog, ErrorLog, HeartbeatLog, Settings } = require('./models'); // Import SensorLog, ErrorLog, HeartbeatLog, and Settings models
+const config = require('./config');
 
 const router = express.Router();
 
@@ -236,6 +237,22 @@ router.get('/errors', async (req, res) => {
 		res.status(200).json({ success: true, data: errorLogs, error: null });
 	} catch (error) {
 		console.error('Error fetching error logs:', error);
+		res.status(500).json({ success: false, data: null, error: error.message || 'Internal server error' });
+	}
+});
+
+// POST /api/authenticate - Verify dashboard password
+router.post('/authenticate', async (req, res) => {
+	try {
+		const { password } = req.body;
+		
+		if (password === config.dashboardPassword) {
+			res.status(200).json({ success: true, data: true, error: null });
+		} else {
+			res.status(401).json({ success: false, data: false, error: 'Incorrect password' });
+		}
+	} catch (error) {
+		console.error('Error during authentication:', error);
 		res.status(500).json({ success: false, data: null, error: error.message || 'Internal server error' });
 	}
 });

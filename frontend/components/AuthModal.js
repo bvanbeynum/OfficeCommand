@@ -8,19 +8,32 @@ const AuthModal = ({ onAuthenticate }) => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 		setError(''); // Clear previous errors
-		// In a real application, you would hash this password and compare it
-		// with a stored hash, or send it to a backend for verification.
-		// For now, a simple hardcoded check for demonstration.
-		if (password === 'officecommand') { // Replace with actual secure password check
-			onAuthenticate(true);
-		} else {
-			setError('Incorrect password. Please try again.');
+		
+		try {
+			const response = await fetch('/api/authenticate', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ password })
+			});
+			const result = await response.json();
+			
+			if (result.success && result.data) {
+				onAuthenticate(true);
+			} else {
+				setError('Incorrect password. Please try again.');
+				onAuthenticate(false);
+			}
+		} catch (fetchError) {
+			setError('Network error during authentication.');
 			onAuthenticate(false);
+		} finally {
+			setPassword(''); // Clear password field after attempt
 		}
-		setPassword(''); // Clear password field after attempt
 	};
 
 	return (
