@@ -51,8 +51,8 @@
 	- [x] 5.3 Instantiate distinct cards for Temperature, Humidity, Light, and Door State, piping live Context data into them.
 	- [x] 5.4 Engineer visual alert states: update MetricCard styling dramatically (e.g., border pulsing red) when Door is OPEN or Light > Threshold.
 	- [x] 5.5 Verify with Browser Subagent, and check into git.
-- [ ] 6.0 Historical Trend Visualization (Line Charts)
-	- [ ] 6.1 Build `TemperatureChart.js` directly drawing a dynamic SVG line chart to map the historical data array, avoiding any third-party charting libraries.
+ - [x] 6.0 Historical Trend Visualization (Line Charts)
+	- [x] 6.1 Build `TemperatureChart.js` directly drawing a dynamic SVG line chart to map the historical data array, avoiding any third-party charting libraries.
 	- [ ] 6.2 Style the SVG paths (stroke, fill) to match the dark-mode aesthetic (e.g., distinct scalable lines).
 	- [ ] 6.3 Implement a segmented toggle control (1h, 5h, 24h) that triggers `fetchHistory()` and forces the SVG chart to re-render.
 	- [ ] 6.4 Verify with Browser Subagent, and check into git.

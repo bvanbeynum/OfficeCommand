@@ -1,6 +1,7 @@
 // /home/bvanbeynum/dev/officecommand/frontend/components/Dashboard.js
 
 import React from 'react';
+import TemperatureChart from './TemperatureChart'; // Import TemperatureChart
 import MetricCard from './MetricCard'; // Import the MetricCard component
 import { useSensor } from '../context/SensorContext';
 
@@ -39,6 +40,7 @@ const Dashboard = () => {
 						currentTelemetry.doorOpen ? '🚪' : '🔒',
 						currentTelemetry.doorOpen ? 'alert' : 'normal' // Placeholder for future alert styling
 					)}
+					<TemperatureChart /> {/* Include the TemperatureChart component */}
 				</>
 			) : ( // Show loading message if either currentTelemetry or settings are null
 				<p>Loading sensor data and settings...</p>
