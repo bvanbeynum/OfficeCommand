@@ -72,12 +72,12 @@ const TemperatureChart = () => {
                     <path d={linePath} fill="none" stroke="var(--color-accent-blue)" strokeWidth="2" />
 
                     {/* Y-axis labels (example: min/max) */}
-                    <text x={margin.left - 10} y={margin.top + innerHeight} textAnchor="end" dominantBaseline="middle" fill="var(--color-text-secondary)">{minTemp.toFixed(1)}°F</text>
-                    <text x={margin.left - 10} y={margin.top} textAnchor="end" dominantBaseline="middle" fill="var(--color-text-secondary)">{maxTemp.toFixed(1)}°F</text>
+                    <text x={margin.left - 10} y={margin.top + innerHeight} textAnchor="end" dominantBaseline="middle" className="chart-label">{minTemp.toFixed(1)}°F</text>
+                    <text x={margin.left - 10} y={margin.top} textAnchor="end" dominantBaseline="middle" className="chart-label">{maxTemp.toFixed(1)}°F</text>
 
                     {/* X-axis labels (example: start/end time) */}
-                    <text x={margin.left} y={chartHeight - 5} textAnchor="start" dominantBaseline="hanging" fill="var(--color-text-secondary)">{new Date(minTimestamp).toLocaleTimeString()}</text>
-                    <text x={chartWidth - margin.right} y={chartHeight - 5} textAnchor="end" dominantBaseline="hanging" fill="var(--color-text-secondary)">{new Date(maxTimestamp).toLocaleTimeString()}</text>
+                    <text x={margin.left} y={chartHeight - 5} textAnchor="start" dominantBaseline="hanging" className="chart-label">{new Date(minTimestamp).toLocaleTimeString()}</text>
+                    <text x={chartWidth - margin.right} y={chartHeight - 5} textAnchor="end" dominantBaseline="hanging" className="chart-label">{new Date(maxTimestamp).toLocaleTimeString()}</text>
                 </svg>
             </div>
         </div>
