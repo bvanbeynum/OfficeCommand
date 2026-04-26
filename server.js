@@ -7,10 +7,6 @@ const apiRoutes = require('./routes'); // Import API routes
 const app = express();
 const port = config.port || 9007;
 
-// Serve static files from the frontend build directory
-// The 'frontend/dist' directory will contain the compiled React application.
-app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
-
 // Middleware for parsing JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
@@ -35,6 +31,28 @@ mongoose.connect(mongoUri, {
     console.error('MongoDB connection error:', err);
     process.exit(1); // Exit process on connection failure
 });
+
+// Configure webpack ====================================================
+
+const isDevelopmentMode = process.env.NODE_ENV === 'development';
+
+if (isDevelopmentMode) {
+	Promise.all([
+		import("webpack"),
+		import("webpack-dev-middleware"),
+		import("./frontend/webpack.dev.js")
+	])
+	.then(([webpack, webpackDevMiddleware, webpackConfig]) => {
+		const webpackLoader = webpack.default;
+		const middleware = webpackDevMiddleware.default;
+
+		const compilier = webpackLoader(webpackConfig.default);
+		app.use(middleware(compilier, { publicPath: "/" }));
+	});
+}
+else {
+	app.use(express.static(path.join(__dirname, 'build')));
+}
 
 // Register API routes
 app.use('/api', apiRoutes);
