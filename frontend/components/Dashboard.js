@@ -107,7 +107,11 @@ const Dashboard = () => {
 							</div>
 						</div>
 						<div style={{ padding: '30px 20px 20px 20px' }}>
-							<TemperatureChart data={historicalData.logs} timeframe={selectedTimeframe} />
+							<TemperatureChart 
+								data={historicalData.logs} 
+								timeframe={selectedTimeframe} 
+								lightThreshold={lightThreshold}
+							/>
 						</div>
 					</div>
 
