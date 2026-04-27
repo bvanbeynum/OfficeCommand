@@ -26,6 +26,28 @@ const Dashboard = () => {
 		.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
 		.slice(0, 5);
 
+	const getTempCondition = (temp) => {
+		if (temp > 80) return { label: 'Hot', icon: '🔥', color: 'var(--color-accent-red)' };
+		if (temp > 75) return { label: 'Warm', icon: '☀️', color: 'var(--color-accent-yellow)' };
+		if (temp > 70) return { label: 'Ideal', icon: '🌡️', color: 'var(--color-accent-green)' };
+		if (temp > 65) return { label: 'Cold', icon: '❄️', color: 'var(--color-accent-blue)' };
+		return { label: 'Freezing', icon: '🧊', color: 'var(--color-accent-blue)' };
+	};
+
+	const getHumCondition = (hum) => {
+		if (hum > 65) return { label: 'Muggy', icon: '🌫️' };
+		return { label: 'Comfortable', icon: '💧' };
+	};
+
+	const formatLastUpdate = (timestamp) => {
+		if (!timestamp) return 'No data';
+		const date = new Date(timestamp);
+		return `Updated ${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+	};
+
+	const tempCond = getTempCondition(currentTelemetry?.temperature);
+	const humCond = getHumCondition(currentTelemetry?.humidity);
+
 	return (
 		<div className="app-container">
 			<header className="dashboard-header">
@@ -48,12 +70,12 @@ const Dashboard = () => {
 						title="Current Temperature" 
 						value={currentTelemetry?.temperature?.toFixed(0)} 
 						unit="°F" 
-						subtitle="Updated 30s ago"
+						subtitle={formatLastUpdate(currentTelemetry?.timestamp)}
 						isLarge={true}
 					>
-						<div className="ideal-indicator">
-							<span className="ideal-icon">🌡️</span>
-							<span className="ideal-text">Ideal</span>
+						<div className="ideal-indicator" style={{ color: tempCond.color }}>
+							<span className="ideal-icon">{tempCond.icon}</span>
+							<span className="ideal-text">{tempCond.label}</span>
 						</div>
 					</MetricCard>
 					
@@ -61,8 +83,8 @@ const Dashboard = () => {
 						title="Humidity" 
 						value={currentTelemetry?.humidity?.toFixed(0)} 
 						unit="%" 
-						subtitle="Comfortable"
-						icon="💧"
+						subtitle={humCond.label}
+						icon={humCond.icon}
 					/>
 
 					<MetricCard 
