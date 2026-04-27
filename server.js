@@ -5,7 +5,7 @@ const config = require('./config');
 const apiRoutes = require('./routes'); // Import API routes
 
 const app = express();
-const port = config.port || 9007;
+const port = config.serverPort || 9007;
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
