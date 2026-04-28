@@ -52,6 +52,11 @@ const Dashboard = () => {
 		<div className="app-container">
 			<header className="dashboard-header">
 				<div className="header-title-container">
+					<svg width="24" height="24" viewBox="0 0 32 32" style={{ display: 'block' }}>
+						<rect width="32" height="32" rx="8" fill="var(--color-background-card)"/>
+						<path d="M7 9 L15 16 L7 23" fill="none" stroke="var(--color-accent-blue)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+						<circle cx="23" cy="11" r="4" fill="none" stroke="var(--color-accent-green)" stroke-width="4"/>
+					</svg>
 					<span className="header-title">Office Climate Control</span>
 					<span className="header-title-divider">|</span>
 					<span className="header-subtitle">TEGAS CAY, SC</span>
