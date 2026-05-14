@@ -1,5 +1,3 @@
-// /home/bvanbeynum/dev/officecommand/frontend/utils/api.js
-
 const API_BASE_URL = '/api'; // Backend and frontend share the same origin
 
 // Helper to process the standardized API response structure

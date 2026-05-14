@@ -1,5 +1,3 @@
-// /home/bvanbeynum/dev/officecommand/frontend/components/MetricCard.js
-
 import React from 'react';
 
 const MetricCard = ({ title, value, unit, subtitle, icon, isLarge, children }) => {

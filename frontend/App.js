@@ -1,5 +1,3 @@
-// /home/bvanbeynum/dev/officecommand/frontend/App.js
-
 import React, { useState } from 'react';
 import AuthModal from './components/AuthModal';
 import Dashboard from './components/Dashboard'; // Import the new Dashboard component

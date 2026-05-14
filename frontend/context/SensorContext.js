@@ -1,5 +1,3 @@
-// /home/bvanbeynum/dev/officecommand/frontend/context/SensorContext.js
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { fetchCurrentSensors, fetchSettings, fetchHistory } from '../utils/api'; // Import the API functions, including fetchHistory
 

@@ -1,5 +1,3 @@
-// /home/bvanbeynum/dev/officecommand/frontend/components/Dashboard.js
-
 import React, { useState } from 'react';
 import TemperatureChart from './TemperatureChart';
 import MetricCard from './MetricCard';

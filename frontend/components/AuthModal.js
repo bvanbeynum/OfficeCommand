@@ -1,5 +1,3 @@
-// /home/bvanbeynum/dev/officecommand/frontend/components/AuthModal.js
-
 import React, { useState } from 'react';
 
 const AuthModal = ({ onAuthenticate }) => {

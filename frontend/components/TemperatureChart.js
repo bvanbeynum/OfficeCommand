@@ -1,5 +1,3 @@
-// /home/bvanbeynum/dev/officecommand/frontend/components/TemperatureChart.js
-
 import React, { useRef, useState, useLayoutEffect } from 'react';
 
 const TemperatureChart = ({ data, timeframe, lightThreshold = 150 }) => {
